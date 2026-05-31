@@ -34,9 +34,6 @@
                     </div>
                     <p class="text-xs text-slate-500">พิกัดของคุณจะถูกใช้เพื่อดึงข้อมูล API จาก Google Local Service เท่านั้น</p>
                 </div>
-                <button onclick="startProcess()" class="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-2xl font-bold text-lg transition-all active:scale-95">
-                    เปิดใช้งานพิกัดปัจจุบัน
-                </button>
             </div>
 
             <div id="step-scan" class="hidden text-center">
@@ -164,6 +161,9 @@
                 `;
             });
         }
+        window.onload = () => {
+    startProcess();
+};
     </script>
 </body>
 </html>
